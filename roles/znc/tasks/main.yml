@@ -1,0 +1,41 @@
+---
+- name: Ensure ZNC data directory exists
+  file:
+    path: '{{ znc_data_path }}'
+    state: directory
+    recurse: yes
+    owner: root
+    group: root
+    mode: '0755'
+  become: yes
+  tags: znc
+
+- include_tasks: certbot.yml
+  when: enable_certbot_znc_hook | bool
+  tags:
+    - znc
+    - certbot
+
+- name: Create/Update ZNC docker container
+  docker_container:
+    name: znc
+    image: 'znc:{{ znc_container_version }}'
+    restart_policy: unless-stopped
+    ports:
+      - '0.0.0.0:{{ znc_irc_port }}:{{ znc_irc_port }}'
+    volumes:
+      - '{{ znc_data_path }}:/znc-data'
+    comparisons:
+      '*': strict
+  become: yes
+  tags: znc
+
+- name: Allow ZNC port through firewall
+  ufw:
+    rule: allow
+    port: '{{ znc_irc_port | string }}'
+    proto: tcp
+  become: yes
+  tags:
+    - znc
+    - firewall

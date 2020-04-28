@@ -1,0 +1,54 @@
+---
+- name: Ensure UniFi data directory exists
+  file:
+    path: '{{ unifi_data_path }}'
+    state: directory
+    recurse: yes
+    owner: root
+    group: root
+    mode: '0755'
+  become: yes
+  tags: unifi
+
+- name: Create/Update UniFi docker container
+  docker_container:
+    name: unifi
+    image: 'jacobalberty/unifi:{{ unifi_container_version }}'
+    restart_policy: unless-stopped
+    init: yes
+    env:
+      RUNAS_UID0: 'false'
+    ports:
+      - "0.0.0.0:{{ unifi_stun_port }}:3478/udp"
+      - "0.0.0.0:{{ unifi_control_port }}:8080"
+      - "0.0.0.0:{{ unifi_api_port }}:8443"
+      - "0.0.0.0:{{ unifi_http_port }}:8880"
+      - "0.0.0.0:{{ unifi_https_port }}:8843"
+      - "0.0.0.0:{{ unifi_speedtest_port }}:6789"
+      - "0.0.0.0:{{ unifi_discover_port }}:10001/udp"
+      - "0.0.0.0:{{ unifi_l2_discovery_port }}:1900/udp"
+    volumes:
+      - '{{ unifi_data_path }}:/unifi'
+    comparisons:
+      '*': strict
+  become: yes
+  tags: unifi
+
+- name: Allow UniFi ports through firewall
+  ufw:
+    rule: allow
+    port: '{{ item.port }}'
+    proto: '{{ item.proto }}'
+  become: yes
+  with_items:
+    - { port: '{{ unifi_stun_port }}', proto: udp }
+    - { port: '{{ unifi_control_port }}', proto: tcp }
+    - { port: '{{ unifi_api_port }}', proto: tcp }
+    - { port: '{{ unifi_http_port }}', proto: tcp }
+    - { port: '{{ unifi_https_port }}', proto: tcp }
+    - { port: '{{ unifi_speedtest_port }}', proto: tcp }
+    - { port: '{{ unifi_discover_port }}', proto: udp }
+    - { port: '{{ unifi_l2_discovery_port }}', proto: udp }
+  tags:
+    - unifi
+    - firewall

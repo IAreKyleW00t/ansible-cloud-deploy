@@ -1,0 +1,52 @@
+---
+- name: Install/Update certbot
+  apt:
+    name: certbot
+    state: latest
+    update_cache: yes
+  become: yes
+  tags: certbot
+
+- name: Generate default SSL certificate
+  command: |
+    certbot certonly --webroot -w {{ nginx_container_path | quote }}/webroot \
+      --rsa-key-size {{ certbot_key_size | quote }} \
+      --email {{ certbot_email | quote }} \
+      --no-eff-email \
+      --agree-tos \
+      --domain {{ ssl_default_domain | quote }} \
+      --keep-until-expiring
+  become: yes
+  tags: certbot
+
+- name: Generate additional SSL certificates
+  command: |
+    certbot certonly --webroot -w {{ nginx_container_path | quote }}/webroot \
+      --rsa-key-size {{ certbot_key_size | quote }} \
+      --email {{ certbot_email | quote }} \
+      --no-eff-email \
+      --agree-tos \
+      --domain {{ item | quote }} \
+      --keep-until-expiring
+  become: yes
+  with_items: '{{ additional_ssl_domains }}'
+  tags: certbot
+
+- name: Create/Update nginx post hook scripts
+  copy:
+    src: post-hook.sh
+    dest: '/etc/letsencrypt/renewal-hooks/post/10-nginx.sh'
+    owner: root
+    group: root
+    mode: '0755'
+  become: yes
+  tags: certbot
+
+- name: Create/Update cronjob for automatic certifacte renewals
+  cron:
+    name: Certbot automatic renewl
+    minute: '0'
+    hour: 0,12
+    job: python3 -c 'import random,time; time.sleep(random.random() * 3600)' && certbot renew
+  become: yes
+  tags: certbot

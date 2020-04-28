@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# {{ ansible_managed }}
+# Created on: {{ ansible_date_time.date }} {{ ansible_date_time.time }}
+ZNC_DOMAIN="{{ znc_domain }}"
+
+# Skip if ZNC domain wasn't renewed
+[[ $RENEWED_LINEAGE != "/etc/letsencrypt/live/${ZNC_DOMAIN}" ]] && exit 0
+echo "Updating ZNC certificates..."
+cat "/etc/letsencrypt/live/${ZNC_DOMAIN}/"{privkey,fullchain}.pem > "{{ znc_data_path }}/znc.pem"
+cat "{{ znc_data_path }}/dhparam.pem" >> "{{ znc_data_path }}/znc.pem"

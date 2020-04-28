@@ -1,0 +1,22 @@
+---
+- name: Create/Update nginx-rtmp docker container
+  docker_container:
+    name: rtmp
+    image: 'tiangolo/nginx-rtmp:{{ rtmp_container_version }}'
+    restart_policy: unless-stopped
+    ports:
+      - '0.0.0.0:{{ rtmp_port }}:1935'
+    comparisons:
+      '*': strict
+  become: yes
+  tags: rtmp
+
+- name: Allow RTMP port through firewall
+  ufw:
+    rule: allow
+    port: '{{ rtmp_port | string }}'
+    proto: tcp
+  become: yes
+  tags:
+    - rtmp
+    - firewall

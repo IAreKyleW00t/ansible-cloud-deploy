@@ -1,0 +1,32 @@
+---
+- name: Generate ZNC Diffie-Hellman parameters
+  openssl_dhparam:
+    path: '{{ znc_data_path }}/dhparam.pem'
+    size: '{{ dhparam_size }}'
+    owner: '100'
+    group: '101'
+  become: yes
+  tags:
+    - certbot
+    - dhparam
+
+- name: Ensure Let's Encrypt renewal-hooks directory exists
+  file:
+    path: /etc/letsencrypt/renewal-hooks/deploy
+    state: directory
+    recurse: yes
+    owner: root
+    group: root
+    mode: '0755'
+  become: yes
+  tags: certbot
+
+- name: Create/Update certbot ZNC deployment hook script
+  template:
+    src: deploy-hook.sh.j2
+    dest: '/etc/letsencrypt/renewal-hooks/deploy/10-znc.sh'
+    owner: root
+    group: root
+    mode: '0755'
+  become: yes
+  tags: certbot

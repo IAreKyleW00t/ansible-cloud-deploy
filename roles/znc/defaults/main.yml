@@ -1,0 +1,16 @@
+---
+# General container settings
+znc_container_version: latest
+
+# Network settings
+znc_irc_port: 6667
+
+# Volume settings
+znc_data_path: /srv/docker/znc
+
+# Diffie-Hellman key size
+dhparam_size: 2048
+
+# Certbot settings (for SSL)
+enable_certbot_znc_hook: no
+znc_domain: ''

@@ -1,0 +1,16 @@
+---
+# General container settings
+unifi_container_version: latest
+
+# Network settings
+unifi_stun_port: 3478
+unifi_control_port: 8080
+unifi_api_port: 8443
+unifi_http_port: 8880
+unifi_https_port: 8843
+unifi_speedtest_port: 6789
+unifi_discover_port: 10001
+unifi_l2_discovery_port: 1900
+
+# Volume settings
+unifi_data_path: /srv/docker/unifi

@@ -1,0 +1,30 @@
+---
+# General container settings
+nginx_container_version: alpine
+
+# Path to create/store volumes for persistent storage
+nginx_container_path: /srv/docker/nginx
+
+# nginx network settings
+nginx_http_port: 80
+nginx_https_port: 443
+
+# Certificate domain
+ssl_default_domain: '{{ inventory_hostname }}'
+
+# HSTS settings
+ssl_hsts_age: 63072000
+
+# OCSP Stapling settings
+ssl_ocsp_stapling_resolvers:
+  - '1.1.1.1'
+  - '1.0.0.1'
+  - '[2606:4700:4700::1111]'
+  - '[2606:4700:4700::1001]'
+
+# Certbot settings
+certbot_email: ''
+certbot_key_size: 4096
+
+# List of additional domains to generate Let's Encrypt certs for
+additional_ssl_domains: []
