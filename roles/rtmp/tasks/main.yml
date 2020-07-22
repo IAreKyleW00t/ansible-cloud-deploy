@@ -1,4 +1,11 @@
 ---
+- name: Pull latest nginx-rtmp docker image
+  docker_image:
+    name: 'tiangolo/nginx-rtmp:{{ rtmp_container_version }}'
+    source: pull
+  become: yes
+  tags: rtmp
+
 - name: Create/Update nginx-rtmp docker container
   docker_container:
     name: rtmp

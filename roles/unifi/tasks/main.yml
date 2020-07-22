@@ -10,6 +10,13 @@
   become: yes
   tags: unifi
 
+- name: Pull latest UniFi docker image
+  docker_image:
+    name: 'jacobalberty/unifi:{{ unifi_container_version }}'
+    source: pull
+  become: yes
+  tags: unifi
+
 - name: Create/Update UniFi docker container
   docker_container:
     name: unifi

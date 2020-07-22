@@ -66,6 +66,13 @@
     - nginx
     - certbot
 
+- name: Pull latest nginx docker image
+  docker_image:
+    name: 'nginx:{{ nginx_container_version }}'
+    source: pull
+  become: yes
+  tags: nginx
+
 - name: Create/Update nginx docker container
   docker_container:
     name: nginx

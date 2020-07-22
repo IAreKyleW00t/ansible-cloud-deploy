@@ -10,6 +10,13 @@
   become: yes
   tags: bitwarden
 
+- name: Pull latest Bitwarden docker image
+  docker_image:
+    name: 'bitwardenrs/server:{{ bitwarden_container_version }}'
+    source: pull
+  become: yes
+  tags: bitwarden
+
 - name: Create/Update Bitwarden docker container
   docker_container:
     name: bitwarden
