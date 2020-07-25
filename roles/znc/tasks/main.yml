@@ -20,6 +20,7 @@
   docker_container:
     name: znc
     image: 'znc:{{ znc_container_version }}'
+    pull: yes
     restart_policy: unless-stopped
     ports:
       - '0.0.0.0:{{ znc_irc_port }}:{{ znc_irc_port }}'

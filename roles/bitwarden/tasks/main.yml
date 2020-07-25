@@ -10,17 +10,11 @@
   become: yes
   tags: bitwarden
 
-- name: Pull latest Bitwarden docker image
-  docker_image:
-    name: 'bitwardenrs/server:{{ bitwarden_container_version }}'
-    source: pull
-  become: yes
-  tags: bitwarden
-
 - name: Create/Update Bitwarden docker container
   docker_container:
     name: bitwarden
     image: 'bitwardenrs/server:{{ bitwarden_container_version }}'
+    pull: yes
     restart_policy: unless-stopped
     env:
       WEBSOCKET_ENABLED: 'true'
