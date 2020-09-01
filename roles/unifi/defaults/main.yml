@@ -1,6 +1,9 @@
 ---
 # General container settings
 unifi_container_version: latest
+unifi_container_uid: 1000
+unifi_container_gid: 1000
+unifi_container_memory_limit: 1024M
 
 # Network settings
 unifi_stun_port: 3478

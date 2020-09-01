@@ -10,4 +10,4 @@ bitwarden_websocket_port: 3012
 bitwarden_data_path: /srv/docker/bitwarden
 
 # Bitwarden admin token
-bitwarden_admin_token: 'changeme'
+bitwarden_admin_token: changeme

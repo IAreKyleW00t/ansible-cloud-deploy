@@ -1,38 +1,38 @@
 ---
 - name: Ensure Bitwarden data directory exists
   file:
-    path: '{{ bitwarden_data_path }}'
+    path: "{{ bitwarden_data_path }}"
     state: directory
     recurse: yes
     owner: root
     group: root
-    mode: '0755'
+    mode: "0755"
   become: yes
   tags: bitwarden
 
 - name: Create/Update Bitwarden docker container
   docker_container:
     name: bitwarden
-    image: 'bitwardenrs/server:{{ bitwarden_container_version }}'
+    image: "bitwardenrs/server:{{ bitwarden_container_version }}"
     pull: yes
     restart_policy: unless-stopped
     env:
-      WEBSOCKET_ENABLED: 'true'
-      ADMIN_TOKEN: '{{ bitwarden_admin_token }}'
+      WEBSOCKET_ENABLED: "true"
+      ADMIN_TOKEN: "{{ bitwarden_admin_token }}"
     ports:
-      - '127.0.0.1:{{ bitwarden_http_port }}:80'
-      - '0.0.0.0:{{ bitwarden_websocket_port }}:3012'
+      - "127.0.0.1:{{ bitwarden_http_port }}:80"
+      - "0.0.0.0:{{ bitwarden_websocket_port }}:3012"
     volumes:
-      - '{{ bitwarden_data_path }}:/data'
+      - "{{ bitwarden_data_path }}:/data"
     comparisons:
-      '*': strict
+      "*": strict
   become: yes
   tags: bitwarden
 
 - name: Allow Bitwarden WebSocket port through firewall
   ufw:
     rule: allow
-    port: '{{ bitwarden_websocket_port | string }}'
+    port: "{{ bitwarden_websocket_port | string }}"
     proto: tcp
   become: yes
   tags:

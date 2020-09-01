@@ -13,4 +13,4 @@ dhparam_size: 2048
 
 # Certbot settings (for SSL)
 enable_certbot_znc_hook: no
-znc_domain: ''
+znc_domain: ""

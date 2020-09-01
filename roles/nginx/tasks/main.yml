@@ -1,53 +1,53 @@
 ---
 - name: Ensure nginx sites directory exists
   file:
-    path: '{{ nginx_container_path }}/sites'
+    path: "{{ nginx_container_path }}/sites"
     state: directory
     recurse: yes
-    owner: '101'
-    group: '101'
-    mode: '0755'
+    owner: "101"
+    group: "101"
+    mode: "0755"
   become: yes
   tags: nginx
 
 - name: Create default HTTP site configuration
   template:
     src: default-http.conf.j2
-    dest: '{{ nginx_container_path }}/sites/00-default.conf'
-    owner: '101'
-    group: '101'
-    mode: '0644'
+    dest: "{{ nginx_container_path }}/sites/00-default.conf"
+    owner: "101"
+    group: "101"
+    mode: "0644"
   become: yes
   tags: nginx
 
 - name: Create/Update nginx configuration
   copy:
     src: nginx.conf
-    dest: '{{ nginx_container_path }}/nginx.conf'
-    owner: '101'
-    group: '101'
-    mode: '0644'
+    dest: "{{ nginx_container_path }}/nginx.conf"
+    owner: "101"
+    group: "101"
+    mode: "0644"
   become: yes
   tags: nginx
 
 - name: Create/Update nginx proxy_params
   copy:
     src: proxy_params
-    dest: '{{ nginx_container_path }}/proxy_params'
-    owner: '101'
-    group: '101'
-    mode: '0644'
+    dest: "{{ nginx_container_path }}/proxy_params"
+    owner: "101"
+    group: "101"
+    mode: "0644"
   become: yes
   tags: nginx
 
 - name: Ensure Webroot directory exists
   file:
-    path: '{{ nginx_container_path }}/webroot'
+    path: "{{ nginx_container_path }}/webroot"
     state: directory
     recurse: yes
-    owner: '101'
-    group: '101'
-    mode: '0755'
+    owner: "101"
+    group: "101"
+    mode: "0755"
   become: yes
   tags:
     - nginx
@@ -60,7 +60,7 @@
     recurse: yes
     owner: root
     group: root
-    mode: '0755'
+    mode: "0755"
   become: yes
   tags:
     - nginx
@@ -69,31 +69,31 @@
 - name: Create/Update nginx docker container
   docker_container:
     name: nginx
-    image: 'nginx:{{ nginx_container_version }}'
+    image: "nginx:{{ nginx_container_version }}"
     pull: yes
     network_mode: host
     ulimits: nofile:8192:8192
     restart_policy: unless-stopped
     volumes:
-      - '{{ nginx_container_path }}/nginx.conf:/etc/nginx/nginx.conf:ro'
-      - '{{ nginx_container_path }}/proxy_params:/etc/nginx/proxy_params:ro'
-      - '{{ nginx_container_path }}/sites:/etc/nginx/sites-enabled:ro'
-      - '{{ nginx_container_path }}/webroot:/usr/share/nginx/html:ro'
-      - '/etc/letsencrypt:/etc/letsencrypt:ro'
+      - "{{ nginx_container_path }}/nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "{{ nginx_container_path }}/proxy_params:/etc/nginx/proxy_params:ro"
+      - "{{ nginx_container_path }}/sites:/etc/nginx/sites-enabled:ro"
+      - "{{ nginx_container_path }}/webroot:/usr/share/nginx/html:ro"
+      - "/etc/letsencrypt:/etc/letsencrypt:ro"
     comparisons:
-      '*': strict
+      "*": strict
   become: yes
   tags: nginx
 
 - name: Allow webserver ports through firewall
   ufw:
     rule: allow
-    port: '{{ item.port }}'
-    proto: '{{ item.proto }}'
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
   become: yes
   with_items:
-    - { port: '{{ nginx_http_port }}', proto: tcp }
-    - { port: '{{ nginx_https_port }}', proto: tcp }
+    - { port: "{{ nginx_http_port }}", proto: tcp }
+    - { port: "{{ nginx_https_port }}", proto: tcp }
   tags:
     - nginx
     - firewall
@@ -106,23 +106,22 @@
 - name: Create default HTTPS site configuration
   template:
     src: default-https.conf.j2
-    dest: '{{ nginx_container_path }}/sites/01-default.conf'
-    owner: '101'
-    group: '101'
-    mode: '0644'
+    dest: "{{ nginx_container_path }}/sites/01-default.conf"
+    owner: "101"
+    group: "101"
+    mode: "0644"
   become: yes
   tags: nginx
 
 - name: Create/Update all custom nginx sites
   copy:
-    src: '{{ item }}'
-    dest: '{{ nginx_container_path }}/sites/'
-    owner: '101'
-    group: '101'
-    mode: '0644'
+    src: "{{ item }}"
+    dest: "{{ nginx_container_path }}/sites/"
+    owner: "101"
+    group: "101"
+    mode: "0644"
   become: yes
-  with_fileglob:
-    '{{ role_name }}/*.conf'
+  with_fileglob: "{{ role_name }}/*.conf"
   tags:
     - nginx
     - sites
@@ -133,5 +132,5 @@
     restart: yes
   become: yes
   tags:
-  - nginx
-  - sites
+    - nginx
+    - sites

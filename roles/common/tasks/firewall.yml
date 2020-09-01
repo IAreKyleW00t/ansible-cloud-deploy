@@ -8,12 +8,12 @@
 
 - name: Allow SSH from authorized IPs
   ufw:
-    src: '{{ item }}'
+    src: "{{ item }}"
     rule: allow
-    port: '22'
+    port: "22"
     proto: tcp
   become: yes
-  with_items: '{{ ssh_ips }}'
+  with_items: "{{ ssh_ips }}"
   tags: firewall
 
 - name: Ensure UFW is enabled and default reject

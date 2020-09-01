@@ -1,24 +1,25 @@
 ---
 - name: Ensure UniFi data directory exists
   file:
-    path: '{{ unifi_data_path }}'
+    path: "{{ unifi_data_path }}"
     state: directory
     recurse: yes
     owner: root
     group: root
-    mode: '0755'
+    mode: "0755"
   become: yes
   tags: unifi
 
 - name: Create/Update UniFi docker container
   docker_container:
     name: unifi
-    image: 'jacobalberty/unifi:{{ unifi_container_version }}'
+    image: "linuxserver/unifi-controller:{{ unifi_container_version }}"
     pull: yes
     restart_policy: unless-stopped
-    init: yes
     env:
-      RUNAS_UID0: 'false'
+      PUID: "{{ unifi_container_uid | string }}"
+      PGID: "{{ unifi_container_gid | string}}"
+      MEM_LIMIT: "{{ unifi_container_memory_limit }}"
     ports:
       - "0.0.0.0:{{ unifi_stun_port }}:3478/udp"
       - "0.0.0.0:{{ unifi_control_port }}:8080"
@@ -29,27 +30,27 @@
       - "0.0.0.0:{{ unifi_discover_port }}:10001/udp"
       - "0.0.0.0:{{ unifi_l2_discovery_port }}:1900/udp"
     volumes:
-      - '{{ unifi_data_path }}:/unifi'
+      - "{{ unifi_data_path }}:/config"
     comparisons:
-      '*': strict
+      "*": strict
   become: yes
   tags: unifi
 
 - name: Allow UniFi ports through firewall
   ufw:
     rule: allow
-    port: '{{ item.port }}'
-    proto: '{{ item.proto }}'
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
   become: yes
   with_items:
-    - { port: '{{ unifi_stun_port }}', proto: udp }
-    - { port: '{{ unifi_control_port }}', proto: tcp }
-    - { port: '{{ unifi_api_port }}', proto: tcp }
-    - { port: '{{ unifi_http_port }}', proto: tcp }
-    - { port: '{{ unifi_https_port }}', proto: tcp }
-    - { port: '{{ unifi_speedtest_port }}', proto: tcp }
-    - { port: '{{ unifi_discover_port }}', proto: udp }
-    - { port: '{{ unifi_l2_discovery_port }}', proto: udp }
+    - { port: "{{ unifi_stun_port }}", proto: udp }
+    - { port: "{{ unifi_control_port }}", proto: tcp }
+    - { port: "{{ unifi_api_port }}", proto: tcp }
+    - { port: "{{ unifi_http_port }}", proto: tcp }
+    - { port: "{{ unifi_https_port }}", proto: tcp }
+    - { port: "{{ unifi_speedtest_port }}", proto: tcp }
+    - { port: "{{ unifi_discover_port }}", proto: udp }
+    - { port: "{{ unifi_l2_discovery_port }}", proto: udp }
   tags:
     - unifi
     - firewall

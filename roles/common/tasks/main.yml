@@ -1,7 +1,7 @@
 ---
 - name: Set system hostname
   hostname:
-    name: '{{ inventory_hostname }}'
+    name: "{{ inventory_hostname }}"
   become: yes
   register: hostname_update
   tags: common
@@ -56,7 +56,7 @@
 
 - name: Perform full system update
   apt:
-    name: '*'
+    name: "*"
     state: latest
     update_cache: yes
   become: yes

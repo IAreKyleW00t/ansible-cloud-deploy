@@ -27,7 +27,7 @@
   pip:
     name: docker
     state: latest
-    umask: '0022'   # accessible globally
+    umask: "0022" # accessible globally
     executable: pip
   become: yes
   tags:
@@ -38,7 +38,7 @@
   pip:
     name: docker
     state: latest
-    umask: '0022'   # accessible globally
+    umask: "0022" # accessible globally
     executable: pip3
   become: yes
   tags:

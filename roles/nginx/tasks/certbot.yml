@@ -29,23 +29,23 @@
       --domain {{ item | quote }} \
       --keep-until-expiring
   become: yes
-  with_items: '{{ additional_ssl_domains }}'
+  with_items: "{{ additional_ssl_domains }}"
   tags: certbot
 
 - name: Create/Update nginx post hook scripts
   copy:
     src: post-hook.sh
-    dest: '/etc/letsencrypt/renewal-hooks/post/10-nginx.sh'
+    dest: "/etc/letsencrypt/renewal-hooks/post/10-nginx.sh"
     owner: root
     group: root
-    mode: '0755'
+    mode: "0755"
   become: yes
   tags: certbot
 
 - name: Create/Update cronjob for automatic certifacte renewals
   cron:
     name: Certbot automatic renewl
-    minute: '0'
+    minute: "0"
     hour: 0,12
     job: python3 -c 'import random,time; time.sleep(random.random() * 3600)' && certbot renew
   become: yes
