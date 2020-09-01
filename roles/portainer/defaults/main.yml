@@ -1,0 +1,12 @@
+---
+# General container settings
+portainer_container_version: latest
+
+# Network settings
+portainer_port: 9000
+
+# Volume settings
+portainer_data_path: /srv/docker/portainer
+
+# Docker socket for local containers
+portainer_docker_socket: /var/run/docker.sock

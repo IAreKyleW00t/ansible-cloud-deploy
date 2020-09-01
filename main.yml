@@ -1,5 +1,6 @@
 ---
 - hosts:
+    - portainer
     - bitwarden
     - unifi
     - znc
@@ -7,6 +8,7 @@
   roles:
     - common
     - docker
+    - portainer
     - bitwarden
     - unifi
     - znc
