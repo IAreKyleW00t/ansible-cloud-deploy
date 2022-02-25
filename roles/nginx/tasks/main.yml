@@ -85,19 +85,6 @@
   become: yes
   tags: nginx
 
-- name: Allow webserver ports through firewall
-  ufw:
-    rule: allow
-    port: "{{ item.port }}"
-    proto: "{{ item.proto }}"
-  become: yes
-  with_items:
-    - { port: "{{ nginx_http_port }}", proto: tcp }
-    - { port: "{{ nginx_https_port }}", proto: tcp }
-  tags:
-    - nginx
-    - firewall
-
 - import_tasks: certbot.yml
   tags:
     - nginx

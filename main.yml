@@ -3,12 +3,10 @@
     - bitwarden
     - unifi
     - znc
-    - rtmp
   roles:
     - common
     - docker
     - bitwarden
     - unifi
     - znc
-    - rtmp
     - nginx

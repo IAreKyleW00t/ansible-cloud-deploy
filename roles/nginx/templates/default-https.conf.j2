@@ -1,8 +1,9 @@
 # {{ ansible_managed }}
 # Created on: {{ ansible_date_time.date }} {{ ansible_date_time.time }}
 
-# generated 2020-04-16, Mozilla Guideline v5.4, nginx 1.17.9, OpenSSL 1.1.1d, modern configuration
-# https://ssl-config.mozilla.org/#server=nginx&version=1.17.9&config=modern&openssl=1.1.1d&guideline=5.4
+# generated 2022-02-25, Mozilla Guideline v5.6, nginx 1.21.6, OpenSSL 1.1.1l, modern configuration
+# https://ssl-config.mozilla.org/#server=nginx&version=1.21.6&config=modern&openssl=1.1.1l&guideline=5.6
+
 server {
     listen {{ nginx_https_port }} ssl http2;
     listen [::]:{{ nginx_https_port }} ssl http2;

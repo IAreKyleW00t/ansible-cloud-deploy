@@ -23,18 +23,7 @@
   become: yes
   tags: docker
 
-- name: Install/Update docker pip package for Ansible modules
-  pip:
-    name: docker
-    state: latest
-    umask: "0022" # accessible globally
-    executable: pip
-  become: yes
-  tags:
-    - docker
-    - python
-
-- name: Install/Update docker pip3 package for Ansible modules
+- name: Install/Update docker package for Ansible modules
   pip:
     name: docker
     state: latest

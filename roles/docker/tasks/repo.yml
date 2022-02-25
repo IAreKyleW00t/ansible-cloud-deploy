@@ -2,11 +2,9 @@
 - name: Install docker dependencies
   apt:
     name:
-      - apt-transport-https
       - ca-certificates
       - curl
-      - gnupg-agent
-      - software-properties-common
+      - gnupg
     state: latest
   become: yes
   tags: repo

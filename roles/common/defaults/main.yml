@@ -1,9 +1,4 @@
 ---
-# SSH settings
-ssh_ips: []
-#  - 192.168.1.69
-#  - 2605:a000::6969
-
 # Additional mounts
 additional_mounts: []
 #  - path: /mnt/example-data

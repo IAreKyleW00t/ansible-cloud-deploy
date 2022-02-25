@@ -1,6 +1,0 @@
----
-# General container settings
-rtmp_container_version: latest
-
-# Network settings
-rtmp_port: 1935

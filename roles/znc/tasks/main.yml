@@ -30,13 +30,3 @@
       "*": strict
   become: yes
   tags: znc
-
-- name: Allow ZNC port through firewall
-  ufw:
-    rule: allow
-    port: "{{ znc_irc_port | string }}"
-    proto: tcp
-  become: yes
-  tags:
-    - znc
-    - firewall

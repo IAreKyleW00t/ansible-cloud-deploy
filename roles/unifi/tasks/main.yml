@@ -35,22 +35,3 @@
       "*": strict
   become: yes
   tags: unifi
-
-- name: Allow UniFi ports through firewall
-  ufw:
-    rule: allow
-    port: "{{ item.port }}"
-    proto: "{{ item.proto }}"
-  become: yes
-  with_items:
-    - { port: "{{ unifi_stun_port }}", proto: udp }
-    - { port: "{{ unifi_control_port }}", proto: tcp }
-    - { port: "{{ unifi_api_port }}", proto: tcp }
-    - { port: "{{ unifi_http_port }}", proto: tcp }
-    - { port: "{{ unifi_https_port }}", proto: tcp }
-    - { port: "{{ unifi_speedtest_port }}", proto: tcp }
-    - { port: "{{ unifi_discover_port }}", proto: udp }
-    - { port: "{{ unifi_l2_discovery_port }}", proto: udp }
-  tags:
-    - unifi
-    - firewall

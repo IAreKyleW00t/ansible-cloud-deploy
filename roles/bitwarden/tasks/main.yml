@@ -28,13 +28,3 @@
       "*": strict
   become: yes
   tags: bitwarden
-
-- name: Allow Bitwarden WebSocket port through firewall
-  ufw:
-    rule: allow
-    port: "{{ bitwarden_websocket_port | string }}"
-    proto: tcp
-  become: yes
-  tags:
-    - bitwarden
-    - firewall
