@@ -19,7 +19,8 @@
     env:
       PUID: "{{ unifi_container_uid | string }}"
       PGID: "{{ unifi_container_gid | string}}"
-      MEM_LIMIT: "{{ unifi_container_memory_limit }}"
+      MEM_LIMIT: "{{ unifi_container_memory_limit | string }}"
+      MEM_STARTUP: "{{ unifi_container_memory_startup | string }}"
     ports:
       - "0.0.0.0:{{ unifi_stun_port }}:3478/udp"
       - "0.0.0.0:{{ unifi_control_port }}:8080"
