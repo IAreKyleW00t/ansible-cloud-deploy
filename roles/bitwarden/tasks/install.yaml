@@ -1,0 +1,23 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Pull and start latest 'vaultwarden/server:{{ bitwarden_container_version }}' docker container
+  community.docker.docker_container:
+    name: bitwarden
+    image: "vaultwarden/server:{{ bitwarden_container_version }}"
+    pull: yes
+    restart_policy: always
+    restart: yes
+    env:
+      WEBSOCKET_ENABLED: "true"
+      ADMIN_TOKEN: "{{ bitwarden_admin_token }}"
+    volumes:
+      - "{{ bitwarden_data_directory }}:/data"
+    ports:
+      - "{{ bitwarden_http_port }}:80"
+      - "{{ bitwarden_websocket_port }}:3012"
+    comparisons:
+      "*": strict # recreate container on _any_ change
+  become: yes
+  tags:
+    - install
+    - bitwarden

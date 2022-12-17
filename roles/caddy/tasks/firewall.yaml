@@ -1,0 +1,16 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: ALLOW HTTP and HTTPS traffic through firewall
+  community.general.ufw:
+    rule: allow
+    direction: in
+    port: "{{ item }}"
+    proto: tcp
+    src: any
+  loop:
+    - 80
+    - 443
+  become: yes
+  tags:
+    - firewall
+    - caddy

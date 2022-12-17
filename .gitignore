@@ -4,9 +4,20 @@
 # Mac files
 .DS_Store
 
-# Ansible
+# Ansible retry files
 *.retry
+
+# Ansible inventories
+inventory
 /inventories/
+
+# Ansible host and group vars
+/host_vars/
+/group_vars/
+
+# Custom ansible static files and templates
 /files/
 /templates/
-/ansible_vault.key
+
+# Ansible vault key
+ansible_vault.key

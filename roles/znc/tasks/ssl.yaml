@@ -1,0 +1,33 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Create Diffie-Hellman key and install script to sync certifcate
+  block:
+    - name: Generate ZNC Diffie-Hellman parameters
+      community.crypto.openssl_dhparam:
+        path: "{{ znc_data_directory }}/dhparam.pem"
+        size: "{{ znc_dhparam_size }}"
+        owner: "100"
+        group: "101"
+
+    - name: Install ZNC SSL certificate update script
+      ansible.builtin.template:
+        src: znc-ssl.sh.j2
+        dest: "/usr/local/bin/znc-{{ znc_domain }}.sh"
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Run ZNC SSL certificate update script
+      ansible.builtin.command: "/usr/local/bin/znc-{{ znc_domain }}.sh"
+
+    - name: Add SSL certificate update cronjob to run on 1st of each month
+      ansible.builtin.cron:
+        name: ZNC certificate update for {{ znc_domain }}
+        minute: "0"
+        hour: "0"
+        day: "1"
+        job: "/usr/local/bin/znc-{{ znc_domain }}.sh"
+  become: yes
+  tags:
+    - ssl
+    - znc

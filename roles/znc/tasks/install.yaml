@@ -1,0 +1,19 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: "Pull and start latest 'znc:{{ znc_container_version }}' docker container"
+  community.docker.docker_container:
+    name: znc
+    image: "znc:{{ znc_container_version }}"
+    pull: yes
+    restart_policy: always
+    restart: yes
+    volumes:
+      - "{{ znc_data_directory }}:/znc-data"
+    ports:
+      - "{{ znc_irc_port }}:{{ znc_irc_port }}"
+    comparisons:
+      "*": strict # recreate container on _any_ change
+  become: yes
+  tags:
+    - install
+    - znc

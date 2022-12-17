@@ -1,0 +1,14 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Ensure ZNC data directory exists
+  ansible.builtin.file:
+    path: "{{ znc_data_directory }}"
+    state: directory
+    recurse: yes
+    owner: root
+    group: root
+    mode: "0755"
+  become: yes
+  tags:
+    - files
+    - znc

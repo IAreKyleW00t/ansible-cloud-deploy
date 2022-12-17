@@ -1,0 +1,31 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Pull and start latest 'linuxserver/unifi-controller:{{ unifi_container_version }}' docker container
+  community.docker.docker_container:
+    name: unifi
+    image: "linuxserver/unifi-controller:{{ unifi_container_version }}"
+    pull: yes
+    restart_policy: always
+    restart: yes
+    env:
+      PUID: "{{ unifi_container_uid | string }}"
+      PGID: "{{ unifi_container_gid | string }}"
+      MEM_LIMIT: "{{ unifi_container_memory_limit | string }}"
+      MEM_STARTUP: "{{ unifi_container_memory_startup | string }}"
+    volumes:
+      - "{{ unifi_data_directory }}:/config"
+    ports:
+      - "{{ unifi_stun_port }}:3478/udp"
+      - "{{ unifi_control_port }}:8080"
+      - "{{ unifi_api_port }}:8443"
+      - "{{ unifi_http_port }}:8880"
+      - "{{ unifi_https_port }}:8843"
+      - "{{ unifi_speedtest_port }}:6789"
+      - "{{ unifi_discover_port }}:10001/udp"
+      - "{{ unifi_l2_discovery_port }}:1900/udp"
+    comparisons:
+      "*": strict # recreate container on _any_ change
+  become: yes
+  tags:
+    - install
+    - unifi

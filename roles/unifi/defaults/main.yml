@@ -1,8 +1,13 @@
 ---
-# General container settings
+# Docker container image tag and data directory
 unifi_container_version: latest
+unifi_data_directory: /srv/docker/unifi
+
+# Container User and Group ID
 unifi_container_uid: 1000
 unifi_container_gid: 1000
+
+# Container JVM memory limits
 unifi_container_memory_limit: 1024
 unifi_container_memory_startup: 1024
 
@@ -15,6 +20,3 @@ unifi_https_port: 8843
 unifi_speedtest_port: 6789
 unifi_discover_port: 10001
 unifi_l2_discovery_port: 1900
-
-# Volume settings
-unifi_data_path: /srv/docker/unifi

@@ -1,0 +1,86 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Download and template netmaker docker files
+  block:
+    - name: Ensure netmaker data directory exists
+      ansible.builtin.file:
+        path: "{{ netmaker_data_directory }}/{{ item }}"
+        state: directory
+        recurse: yes
+        owner: root
+        group: root
+        mode: "0755"
+      loop:
+        - dnsconfig
+        - caddy/data
+        - caddy/conf
+        - mosquitto/data
+        - mosquitto/logs
+        - sqldata
+
+    - name: Download latest netmaker docker files
+      ansible.builtin.get_url:
+        url: "https://raw.githubusercontent.com/gravitl/netmaker/{{ netmaker_branch }}/{{ item.file }}"
+        dest: "{{ item.dest }}"
+        mode: "{{ item.mode }}"
+      loop:
+        - file: compose/docker-compose.yml,
+          dest: "{{ netmaker_data_directory }}/docker-compose.yaml",
+          mode: "0600"
+        - file: docker/mosquitto.conf,
+          dest: "{{ netmaker_data_directory }}/mosquitto.conf",
+          mode: "0644"
+        - file: docker/Caddyfile,
+          dest: "{{ netmaker_data_directory }}/Caddyfile",
+          mode: "0644"
+        - file: docker/wait.sh,
+          dest: "{{ netmaker_data_directory }}/wait.sh",
+          mode: "0755"
+
+    - name: Template out docker-compose.yaml
+      ansible.builtin.replace:
+        path: "{{ netmaker_data_directory }}/docker-compose.yaml"
+        regexp: "{{ item.regexp }}"
+        replace: "{{ item.value }}"
+      loop:
+        - regexp: SERVER_PUBLIC_IP,
+          value: "{{ ansible_default_ipv4.address }}"
+        - regexp: NETMAKER_BASE_DOMAIN
+          value: "{{ netmaker_base_domain }}"
+        - regexp: REPLACE_MASTER_KEY
+          value: "{{ netmaker_master_key }}"
+        - regexp: REPLACE_MQ_ADMIN_PASSWORD,
+          value: "{{ netmaker_mq_password }}"
+        - regexp: NODE_ID:.+,
+          value: "NODE_ID: {{ netmaker_node_id | quote }}"
+        - regexp: '^volumes:\n(\s+\w+: {}(\n|$))+'
+          value: ""
+        - regexp: "dnsconfig:",
+          value: "{{ netmaker_data_directory }}/dnsconfig:"
+        - regexp: "caddy_data:",
+          value: "{{ netmaker_data_directory }}/caddy/data:"
+        - regexp: "caddy_conf:",
+          value: "{{ netmaker_data_directory }}/caddy/conf:"
+        - regexp: "mosquitto_data:",
+          value: "{{ netmaker_data_directory }}/mosquitto/data:"
+        - regexp: "mosquitto_logs:",
+          value: "{{ netmaker_data_directory }}/mosquitto/logs:"
+        - regexp: "sqldata:",
+          value: "{{ netmaker_data_directory }}/sqldata:"
+        - regexp: '\/root\/(.+):',
+          value: "{{ netmaker_data_directory }}/\\1:"
+      loop_control:
+        label: "{{ item.regexp }}" # don't leak secrets
+
+    - name: Template out Caddyfile
+      ansible.builtin.replace:
+        path: "{{ netmaker_data_directory }}/Caddyfile"
+        regexp: "{{ item.regexp }}"
+        replace: "{{ item.value }}"
+      loop:
+        - { regexp: NETMAKER_BASE_DOMAIN, value: "{{ netmaker_base_domain }}" }
+        - { regexp: YOUR_EMAIL, value: "{{ netmaker_letsencrypt_email }}" }
+  become: yes
+  tags:
+    - files
+    - netmaker

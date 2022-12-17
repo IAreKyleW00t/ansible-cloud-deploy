@@ -1,0 +1,6 @@
+---
+- hosts:
+    - netmaker
+  roles:
+    - common
+    - netmaker

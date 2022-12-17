@@ -1,0 +1,13 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: ALLOW ZNC HTTP and WebSocket traffic through firewall
+  community.general.ufw:
+    rule: allow
+    direction: in
+    port: "{{ znc_irc_port }}"
+    proto: tcp
+    src: any
+  become: yes
+  tags:
+    - firewall
+    - znc

@@ -1,38 +1,16 @@
 ---
-- name: Ensure UniFi data directory exists
-  file:
-    path: "{{ unifi_data_path }}"
-    state: directory
-    recurse: yes
-    owner: root
-    group: root
-    mode: "0755"
-  become: yes
-  tags: unifi
+- import_tasks: files.yaml
+  tags:
+    - unifi
+    - files
 
-- name: Create/Update UniFi docker container
-  docker_container:
-    name: unifi
-    image: "linuxserver/unifi-controller:{{ unifi_container_version }}"
-    pull: yes
-    restart_policy: unless-stopped
-    env:
-      PUID: "{{ unifi_container_uid | string }}"
-      PGID: "{{ unifi_container_gid | string}}"
-      MEM_LIMIT: "{{ unifi_container_memory_limit | string }}"
-      MEM_STARTUP: "{{ unifi_container_memory_startup | string }}"
-    ports:
-      - "0.0.0.0:{{ unifi_stun_port }}:3478/udp"
-      - "0.0.0.0:{{ unifi_control_port }}:8080"
-      - "0.0.0.0:{{ unifi_api_port }}:8443"
-      - "0.0.0.0:{{ unifi_http_port }}:8880"
-      - "0.0.0.0:{{ unifi_https_port }}:8843"
-      - "0.0.0.0:{{ unifi_speedtest_port }}:6789"
-      - "0.0.0.0:{{ unifi_discover_port }}:10001/udp"
-      - "0.0.0.0:{{ unifi_l2_discovery_port }}:1900/udp"
-    volumes:
-      - "{{ unifi_data_path }}:/config"
-    comparisons:
-      "*": strict
-  become: yes
-  tags: unifi
+- import_tasks: firewall.yaml
+  tags:
+    - unifi
+    - firewall
+
+- import_tasks: install.yaml
+  tags:
+    - unifi
+    - install
+  

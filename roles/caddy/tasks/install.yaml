@@ -1,0 +1,20 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: "Pull and start latest 'caddy:{{ caddy_container_version }}' docker container"
+  community.docker.docker_container:
+    name: caddy
+    image: "caddy:{{ caddy_container_version }}"
+    pull: yes
+    restart_policy: always
+    restart: yes
+    network_mode: host # for accessing other Docker services
+    volumes:
+      - "{{ caddy_data_directory }}/Caddyfile:/etc/caddy/Caddyfile"
+      - "{{ caddy_data_directory }}/data:/data"
+      - "{{ caddy_data_directory }}/config:/config"
+    comparisons:
+      "*": strict # recreate container on _any_ change
+  become: yes
+  tags:
+    - install
+    - bitwarden

@@ -1,12 +1,12 @@
 ---
 - hosts:
-    - bitwarden
+    - caddy
     - unifi
+    - bitwarden
     - znc
   roles:
     - common
-    - docker
-    - bitwarden
+    - caddy
     - unifi
+    - bitwarden
     - znc
-    - nginx

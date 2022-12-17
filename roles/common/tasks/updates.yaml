@@ -1,0 +1,55 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Perform full system update
+  block:
+    - name: Update Apt cache
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Update all packages
+      ansible.builtin.apt:
+        name: "*"
+        state: latest
+      register: apt_update
+
+    - name: Perform dist-upgrade
+      ansible.builtin.apt:
+        upgrade: dist
+      register: dist_update
+
+    - name: Enable unattended-upgrades
+      ansible.builtin.apt:
+        name: unattended-upgrades
+        state: latest
+  become: yes
+  tags:
+    - updates
+    - common
+
+- name: Reboot system to apply all updates
+  ansible.builtin.reboot:
+    reboot_timeout: "{{ system_reboot_timeout }}"
+  become: yes
+  when: apt_update.changed
+  tags:
+    - updates
+    - common
+
+- name: Cleanup up old packages and caches
+  block:
+    - name: Remove obsolete packages from the cache
+      ansible.builtin.apt:
+        autoclean: yes
+
+    - name: Remove orphaned packages that are no longer required
+      ansible.builtin.apt:
+        autoremove: yes
+
+    - name: Clean old packages and install scripts
+      ansible.builtin.apt:
+        clean: yes
+  become: yes
+  tags:
+    - updates
+    - cleanup
+    - common

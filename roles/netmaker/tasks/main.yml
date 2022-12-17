@@ -1,16 +1,16 @@
 ---
 - import_tasks: files.yaml
   tags:
-    - unifi
+    - netmaker
     - files
 
 - import_tasks: firewall.yaml
   tags:
-    - unifi
+    - netmaker
     - firewall
 
 - import_tasks: install.yaml
   tags:
-    - unifi
+    - netmaker
     - install
   

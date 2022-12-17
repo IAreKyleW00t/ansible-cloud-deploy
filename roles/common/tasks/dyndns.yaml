@@ -1,0 +1,23 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Run linode-dyndns docker container
+  community.docker.docker_container:
+    name: linode-dyndns
+    image: "iarekylew00t/linode-dyndns:{{ linode_dyndns_container_version }}"
+    pull: yes
+    restart_policy: always
+    restart: yes
+    network_mode: host # for IPv6 to work
+    env:
+      TOKEN: "{{ linode_api_token }}"
+      HOST: "{{ linode_dyndns_hosts | join(' ') }}"
+      DOMAIN: "{{ linode_dyndns_domain }}"
+      INTERVAL: "{{ linode_dyndns_interval | string }}"
+      IPV6: "{{ linode_dyndns_ipv6 | string }}"
+      NO_COLOR: "true"
+    comparisons:
+      "*": strict # recreate container on _any_ change
+  become: yes
+  tags:
+    - dyndns
+    - common

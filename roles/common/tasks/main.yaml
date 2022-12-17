@@ -1,0 +1,37 @@
+---
+- import_tasks: hostname.yaml
+  tags:
+    - common
+    - hostname
+
+- include_tasks: mounts.yaml
+  loop: "{{ additional_mounts }}"
+  tags:
+    - common
+    - mounts
+
+- import_tasks: ssh.yaml
+  tags:
+    - common
+    - ssh
+
+- import_tasks: firewall.yaml
+  tags:
+    - common
+    - firewall
+
+- import_tasks: updates.yaml
+  tags:
+    - common
+    - updates
+
+- import_tasks: docker.yaml
+  tags:
+    - common
+    - docker
+
+- import_tasks: dyndns.yaml
+  when: linode_api_token | length > 0
+  tags:
+    - common
+    - dyndns

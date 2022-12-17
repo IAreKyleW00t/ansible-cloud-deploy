@@ -1,0 +1,17 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Set system hostname
+  block:
+    - name: Set hostname to '{{ inventory_hostname }}'
+      ansible.builtin.hostname:
+        name: "{{ inventory_hostname }}"
+      register: hostname_update
+
+    - name: Reboot system to apply hostname
+      ansible.builtin.reboot:
+        reboot_timeout: "{{ system_reboot_timeout }}"
+      when: hostname_update.changed
+  become: yes
+  tags:
+    - hostname
+    - common

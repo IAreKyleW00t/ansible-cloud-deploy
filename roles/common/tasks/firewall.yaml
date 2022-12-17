@@ -1,0 +1,48 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Configure and enable firewall
+  block:
+    - name: Install UFW
+      ansible.builtin.apt:
+        name: ufw
+        state: latest
+        update_cache: yes
+
+    - name: Enable IPv6 support
+      ansible.builtin.lineinfile:
+        dest: /etc/default/ufw
+        line: IPV6=yes
+        create: yes
+
+    - name: DENY incoming traffic by default
+      community.general.ufw:
+        default: deny
+        direction: incoming
+
+    - name: ALLOW outgoing traffic by default
+      community.general.ufw:
+        default: allow
+        direction: outgoing
+
+    - name: Enable rate-limit on SSH
+      community.general.ufw:
+        rule: limit
+        port: ssh
+        proto: tcp
+
+    - name: ALLOW SSH traffic from specific IPs
+      community.general.ufw:
+        rule: allow
+        direction: in
+        src: "{{ item }}"
+        port: 22
+        proto: tcp
+      loop: "{{ ssh_allowed_ips }}"
+
+    - name: Enable UFW
+      community.general.ufw:
+        state: enabled
+  become: yes
+  tags:
+    - firewall
+    - common

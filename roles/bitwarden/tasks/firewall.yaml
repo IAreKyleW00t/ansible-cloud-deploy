@@ -1,0 +1,18 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: ALLOW Bitwarden HTTP and WebSocket traffic through firewall
+  community.general.ufw:
+    rule: allow
+    direction: in
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+    src: any
+  loop:
+    - port: "{{ bitwarden_http_port }}"
+      proto: tcp
+    - port: "{{ bitwarden_websocket_port }}"
+      proto: tcp
+  become: yes
+  tags:
+    - firewall
+    - bitwarden
