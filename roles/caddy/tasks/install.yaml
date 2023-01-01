@@ -17,4 +17,4 @@
   become: yes
   tags:
     - install
-    - bitwarden
+    - caddy

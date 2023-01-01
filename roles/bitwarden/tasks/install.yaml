@@ -9,12 +9,13 @@
     restart: yes
     env:
       WEBSOCKET_ENABLED: "true"
+      WEBSOCKET_PORT: "{{ bitwarden_websocket_port | string }}"
       ADMIN_TOKEN: "{{ bitwarden_admin_token }}"
     volumes:
       - "{{ bitwarden_data_directory }}:/data"
     ports:
       - "{{ bitwarden_http_port }}:80"
-      - "{{ bitwarden_websocket_port }}:3012"
+      - "{{ bitwarden_websocket_port }}:{{ bitwarden_websocket_port }}"
     comparisons:
       "*": strict # recreate container on _any_ change
   become: yes
