@@ -24,17 +24,17 @@
         dest: "{{ item.dest }}"
         mode: "{{ item.mode }}"
       loop:
-        - file: compose/docker-compose.yml,
-          dest: "{{ netmaker_data_directory }}/docker-compose.yaml",
+        - file: compose/docker-compose.yml
+          dest: "{{ netmaker_data_directory }}/docker-compose.yaml"
           mode: "0600"
-        - file: docker/mosquitto.conf,
-          dest: "{{ netmaker_data_directory }}/mosquitto.conf",
+        - file: docker/mosquitto.conf
+          dest: "{{ netmaker_data_directory }}/mosquitto.conf"
           mode: "0644"
-        - file: docker/Caddyfile,
-          dest: "{{ netmaker_data_directory }}/Caddyfile",
+        - file: docker/Caddyfile
+          dest: "{{ netmaker_data_directory }}/Caddyfile"
           mode: "0644"
-        - file: docker/wait.sh,
-          dest: "{{ netmaker_data_directory }}/wait.sh",
+        - file: docker/wait.sh
+          dest: "{{ netmaker_data_directory }}/wait.sh"
           mode: "0755"
 
     - name: Template out docker-compose.yaml
@@ -43,31 +43,31 @@
         regexp: "{{ item.regexp }}"
         replace: "{{ item.value }}"
       loop:
-        - regexp: SERVER_PUBLIC_IP,
+        - regexp: SERVER_PUBLIC_IP
           value: "{{ ansible_default_ipv4.address }}"
         - regexp: NETMAKER_BASE_DOMAIN
           value: "{{ netmaker_base_domain }}"
         - regexp: REPLACE_MASTER_KEY
           value: "{{ netmaker_master_key }}"
-        - regexp: REPLACE_MQ_ADMIN_PASSWORD,
+        - regexp: REPLACE_MQ_ADMIN_PASSWORD
           value: "{{ netmaker_mq_password }}"
-        - regexp: NODE_ID:.+,
+        - regexp: "NODE_ID:.+"
           value: "NODE_ID: {{ netmaker_node_id | quote }}"
         - regexp: '^volumes:\n(\s+\w+: {}(\n|$))+'
           value: ""
-        - regexp: "dnsconfig:",
+        - regexp: "dnsconfig:"
           value: "{{ netmaker_data_directory }}/dnsconfig:"
-        - regexp: "caddy_data:",
+        - regexp: "caddy_data:"
           value: "{{ netmaker_data_directory }}/caddy/data:"
-        - regexp: "caddy_conf:",
+        - regexp: "caddy_conf:"
           value: "{{ netmaker_data_directory }}/caddy/conf:"
-        - regexp: "mosquitto_data:",
+        - regexp: "mosquitto_data:"
           value: "{{ netmaker_data_directory }}/mosquitto/data:"
-        - regexp: "mosquitto_logs:",
+        - regexp: "mosquitto_logs:"
           value: "{{ netmaker_data_directory }}/mosquitto/logs:"
-        - regexp: "sqldata:",
+        - regexp: "sqldata:"
           value: "{{ netmaker_data_directory }}/sqldata:"
-        - regexp: '\/root\/(.+):',
+        - regexp: '\/root\/(.+):'
           value: "{{ netmaker_data_directory }}/\\1:"
       loop_control:
         label: "{{ item.regexp }}" # don't leak secrets
