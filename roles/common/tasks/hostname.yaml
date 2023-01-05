@@ -7,10 +7,16 @@
         name: "{{ inventory_hostname }}"
       register: hostname_update
 
+    - name: Set local hostname in /etc/hosts
+      ansible.builtin.lineinfile:
+        dest: /etc/hosts
+        line: "127.0.1.1 {{ inventory_hostname }}"
+      register: hosts_update
+
     - name: Reboot system to apply hostname
       ansible.builtin.reboot:
         reboot_timeout: "{{ system_reboot_timeout }}"
-      when: hostname_update.changed
+      when: hostname_update.changed or hosts_update.changed
   become: yes
   tags:
     - hostname
