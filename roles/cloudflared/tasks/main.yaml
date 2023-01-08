@@ -1,0 +1,16 @@
+---
+- name: Pull and start latest 'cloudflare/cloudflared:{{ cloudflared_container_version }}' docker container
+  community.docker.docker_container:
+    name: uptime-kuma
+    image: "cloudflare/cloudflared:{{ cloudflared_container_version }}"
+    command: "tunnel --no-autoupdate run --token {{ cloudflared_tunnel_token }}"
+    pull: yes
+    restart_policy: unless-stopped
+    restart: yes
+    network_mode: host # To access other container services
+    comparisons:
+      "*": strict # recreate container on _any_ change
+  become: yes
+  tags:
+    - install
+    - cloudflared

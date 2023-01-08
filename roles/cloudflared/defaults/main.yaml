@@ -1,0 +1,6 @@
+---
+# Docker container image tag and data directory
+cloudflared_container_version: latest
+
+# Cloudflare Zero Trust tunnel token
+cloudflared_tunnel_token: ""
