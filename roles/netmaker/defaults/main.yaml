@@ -1,0 +1,21 @@
+---
+# Netmaker branch to pull files from
+netmaker_branch: master
+
+# Docker container file location
+netmaker_data_directory: /srv/docker/netmaker
+
+# Netmaker base domain
+netmaker_base_domain: netmaker.example.com
+
+# Let's Encrypt email for SSL registration
+netmaker_letsencrypt_email: admin@example.com
+
+# Netmaker master key
+netmaker_master_key: BkFGRQ......c9MclD
+
+# Mosquitto admin password
+netmaker_mq_password: Passw0rd!
+
+# Netmaker node ID (name)
+netmaker_node_id: netmaker-1

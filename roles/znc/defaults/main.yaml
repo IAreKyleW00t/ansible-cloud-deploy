@@ -1,0 +1,15 @@
+---
+# Docker container image tag and data directory
+znc_container_version: latest
+znc_data_directory: /srv/docker/znc
+
+# ZNC Diffie-Hellman key size
+znc_dhparam_size: 2048
+
+# Caddy settings (for SSL)
+znc_caddy_data_directory: /srv/docker/caddy/data
+znc_domain: ""
+
+# Network settings
+znc_http_port: 6680
+znc_irc_port: 6667

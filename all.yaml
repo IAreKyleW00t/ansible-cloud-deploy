@@ -1,0 +1,5 @@
+---
+# - import_playbook: netmaker.yaml # do separately
+- import_playbook: raspi.yaml
+- import_playbook: padparadscha.yaml
+- import_playbook: topaz.yaml

@@ -5,12 +5,13 @@
     name: znc
     image: "znc:{{ znc_container_version }}"
     pull: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     restart: yes
     volumes:
       - "{{ znc_data_directory }}:/znc-data"
     ports:
       - "{{ znc_irc_port }}:{{ znc_irc_port }}"
+      - "{{ znc_http_port }}:{{ znc_http_port }}"
     comparisons:
       "*": strict # recreate container on _any_ change
   become: yes

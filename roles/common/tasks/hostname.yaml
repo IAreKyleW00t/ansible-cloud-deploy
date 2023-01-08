@@ -16,6 +16,7 @@
     - name: Reboot system to apply hostname
       ansible.builtin.reboot:
         reboot_timeout: "{{ system_reboot_timeout }}"
+      throttle: 1 # only reboot 1 server at a time
       when: hostname_update.changed or hosts_update.changed
   become: yes
   tags:

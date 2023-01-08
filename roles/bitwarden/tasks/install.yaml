@@ -5,7 +5,7 @@
     name: bitwarden
     image: "vaultwarden/server:{{ bitwarden_container_version }}"
     pull: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     restart: yes
     env:
       WEBSOCKET_ENABLED: "true"

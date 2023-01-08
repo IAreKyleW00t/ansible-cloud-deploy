@@ -5,7 +5,7 @@
     name: unifi
     image: "linuxserver/unifi-controller:{{ unifi_container_version }}"
     pull: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     restart: yes
     env:
       PUID: "{{ unifi_container_uid | string }}"

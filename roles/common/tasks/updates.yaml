@@ -29,6 +29,7 @@
 - name: Reboot system to apply all updates
   ansible.builtin.reboot:
     reboot_timeout: "{{ system_reboot_timeout }}"
+  throttle: 1 # only reboot 1 server at a time
   become: yes
   when: apt_update.changed
   tags:

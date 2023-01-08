@@ -43,6 +43,8 @@
         regexp: "{{ item.regexp }}"
         replace: "{{ item.value }}"
       loop:
+        - regexp: 'PORT_FORWARD_SERVICES: ".+"'
+          value: 'PORT_FORWARD_SERVICES: ""'
         - regexp: SERVER_PUBLIC_IP
           value: "{{ ansible_default_ipv4.address }}"
         - regexp: NETMAKER_BASE_DOMAIN

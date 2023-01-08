@@ -1,0 +1,18 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Pull and start latest 'louislam/uptime-kuma:{{ uptime_kuma_container_version }}' docker container
+  community.docker.docker_container:
+    name: uptime-kuma
+    image: "louislam/uptime-kuma:{{ uptime_kuma_container_version }}"
+    pull: yes
+    restart_policy: unless-stopped
+    restart: yes
+    network_mode: host # To access other container services
+    volumes:
+      - "{{ uptime_kuma_data_directory }}:/app/data"
+    comparisons:
+      "*": strict # recreate container on _any_ change
+  become: yes
+  tags:
+    - install
+    - kuma

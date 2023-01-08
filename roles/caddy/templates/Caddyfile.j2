@@ -6,5 +6,8 @@
 {% for key, val in caddy_hosts.items() %}
 {{ key }} {
     {{ val | indent(4) }}
+    tls {$CLOUDFLARE_EMAIL} { 
+        dns cloudflare {$CLOUDFLARE_API_TOKEN}
+    }
 }
 {% endfor %}

@@ -1,0 +1,9 @@
+---
+- hosts:
+    - padparadscha
+  roles:
+    - common
+    - bitwarden
+    - znc
+    - kuma
+    - caddy

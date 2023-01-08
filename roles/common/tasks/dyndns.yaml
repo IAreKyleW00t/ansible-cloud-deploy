@@ -5,7 +5,7 @@
     name: linode-dyndns
     image: "iarekylew00t/linode-dyndns:{{ linode_dyndns_container_version }}"
     pull: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     restart: yes
     network_mode: host # for IPv6 to work
     env:

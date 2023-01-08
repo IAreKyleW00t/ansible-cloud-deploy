@@ -1,0 +1,7 @@
+---
+- hosts:
+    - morganite
+    - amethyst-84
+    - amethyst-33
+  roles:
+    - common

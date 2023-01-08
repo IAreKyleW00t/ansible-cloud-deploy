@@ -1,8 +1,13 @@
 # Called from mail.yaml, using include_tasks
 ---
 # NetMaker uses docker-compose with several containers
-- name: Update sysctl and then download and start netmaker
+- name: Update iptables and sysctl, then download and start netmaker
   block:
+    - name: Allow FORWARD traffic
+      ansible.builtin.iptables:
+        chain: FORWARD
+        policy: ACCEPT
+
     - name: Set UDP Receive Buffer Size to 2500000
       ansible.posix.sysctl:
         name: net.core.rmem_max
