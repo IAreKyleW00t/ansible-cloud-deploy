@@ -4,11 +4,6 @@
     - znc
     - files
 
-- import_tasks: firewall.yaml
-  tags:
-    - znc
-    - firewall
-
 - import_tasks: ssl.yaml
   when: znc_domain | length > 0
   tags:

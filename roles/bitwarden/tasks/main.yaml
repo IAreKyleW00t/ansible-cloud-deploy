@@ -1,15 +1,10 @@
 ---
 - import_tasks: files.yaml
   tags:
-    - caddy
+    - bitwarden
     - files
-
-- import_tasks: firewall.yaml
-  tags:
-    - caddy
-    - firewall
 
 - import_tasks: install.yaml
   tags:
-    - caddy
+    - bitwarden
     - install

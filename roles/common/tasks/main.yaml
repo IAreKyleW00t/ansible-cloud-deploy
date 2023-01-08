@@ -15,11 +15,6 @@
     - common
     - ssh
 
-- import_tasks: firewall.yaml
-  tags:
-    - common
-    - firewall
-
 - import_tasks: updates.yaml
   tags:
     - common

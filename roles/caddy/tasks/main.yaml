@@ -1,16 +1,10 @@
 ---
 - import_tasks: files.yaml
   tags:
-    - netmaker
+    - caddy
     - files
-
-- import_tasks: firewall.yaml
-  tags:
-    - netmaker
-    - firewall
 
 - import_tasks: install.yaml
   tags:
-    - netmaker
+    - caddy
     - install
-  

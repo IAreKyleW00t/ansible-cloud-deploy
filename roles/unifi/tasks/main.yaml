@@ -1,0 +1,10 @@
+---
+- import_tasks: files.yaml
+  tags:
+    - unifi
+    - files
+
+- import_tasks: install.yaml
+  tags:
+    - unifi
+    - install
