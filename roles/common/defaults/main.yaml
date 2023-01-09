@@ -1,10 +1,26 @@
 ---
+# System-wide DNS
+nameservers: []
+
+# Additional hosts in /etc/hots
+additional_hosts: []
+
 # Additional mount points
 additional_mounts: []
 #  - path: /mnt/example-data
 #    src: /dev/sdf
 #    fstype: xfs
 #    opts: defaults,nofail
+
+# Additional users
+additional_users: []
+# - name: test
+#   command: Example user
+#   groups: docker,users
+#   sudo:
+#     enable: yes
+#     commands: ALL
+#     nopassword: yes
 
 # IPs to allow SSH through firewall (IPv4 or IPv6)
 ssh_allowed_ips: []

@@ -1,4 +1,4 @@
 ---
-- hosts: raspi
+- hosts: pihole
   roles:
     - common

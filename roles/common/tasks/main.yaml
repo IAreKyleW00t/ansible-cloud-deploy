@@ -4,6 +4,18 @@
     - common
     - hostname
 
+- include_tasks: dns.yaml
+  when: nameservers | length > 0
+  tags:
+    - common
+    - dns
+
+- include_tasks: hosts.yaml
+  when: additional_hosts | length > 0
+  tags:
+    - common
+    - hosts
+
 - include_tasks: mounts.yaml
   loop: "{{ additional_mounts }}"
   tags:
@@ -30,3 +42,11 @@
   tags:
     - common
     - dyndns
+
+- include_tasks: users.yaml
+  loop: "{{ additional_users }}"
+  loop_control:
+    loop_var: user
+  tags:
+    - common
+    - users

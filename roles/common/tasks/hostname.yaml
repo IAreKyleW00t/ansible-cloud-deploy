@@ -2,7 +2,7 @@
 ---
 - name: Set system hostname
   block:
-    - name: Set hostname to '{{ inventory_hostname }}'
+    - name: Set system hostname
       ansible.builtin.hostname:
         name: "{{ inventory_hostname }}"
       register: hostname_update
@@ -11,6 +11,8 @@
       ansible.builtin.lineinfile:
         dest: /etc/hosts
         line: "127.0.1.1 {{ inventory_hostname }}"
+        insertbefore: "^#+#$"
+        firstmatch: yes
       register: hosts_update
 
     - name: Reboot system to apply hostname

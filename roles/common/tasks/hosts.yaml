@@ -1,0 +1,16 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Add additional hosts in /etc/hosts
+  block:
+    - name: Updating additional hosts in /etc/hosts
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        regexp: "^.+ {{ item.split(' ')[1] }}$"
+        line: "{{ item }}"
+        insertbefore: "^#+#$"
+        firstmatch: yes
+      loop: "{{ additional_hosts }}"
+  become: yes
+  tags:
+    - hosts
+    - common

@@ -1,0 +1,61 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Create additional users
+  block:
+    - name: Ensure user '{{ user.name }}' exists
+      ansible.builtin.user:
+        name: "{{ user.name }}"
+        comment: "{{ user.comment }}"
+        groups: "{{ user.groups }}"
+
+    - name: Add '{{ user.name }}' to sudoers file
+      community.general.sudoers:
+        name: ansible
+        user: "{{ user.name }}"
+        nopassword: "{{ user.sudo.nopassword }}"
+        commands: "{{ user.sudo.commands }}"
+      when: user.sudo.enabled | bool
+
+    - name: Create SSH folder for user '{{ user.name }}'
+      ansible.builtin.file:
+        path: "/home/{{ user.name }}/.ssh"
+        state: directory
+        recurse: yes
+        owner: "{{ user.name }}"
+        group: "{{ user.name }}"
+        mode: "0700"
+      when: user.ssh | bool
+
+    - name: Set SSH private key for user '{{ user.name }}'
+      ansible.builtin.copy:
+        dest: "/home/{{ user.name }}/.ssh/id_rsa"
+        src: "ssh/{{ user.name }}_rsa" # need to include locally
+        owner: "{{ user.name }}"
+        group: "{{ user.name }}"
+        mode: "0600"
+      when: user.ssh | bool
+
+    - name: Set SSH public key for user '{{ user.name }}'
+      ansible.builtin.copy:
+        dest: "/home/{{ user.name }}/.ssh/id_rsa.pub"
+        src: "ssh/{{ user.name }}_rsa.pub" # need to include locally
+        owner: "{{ user.name }}"
+        group: "{{ user.name }}"
+        mode: "0644"
+      when: user.ssh | bool
+
+    - name: Add SSH public to authorized_keys for '{{ user.name }}'
+      ansible.builtin.lineinfile:
+        path: /home/{{ user.name }}/.ssh/authorized_keys
+        line: "{{ item }}"
+        owner: "{{ user.name }}"
+        group: "{{ user.name }}"
+        mode: "0644"
+        create: yes
+      with_file:
+        - "ssh/{{ user.name }}_rsa.pub"
+      when: user.ssh | bool
+  become: yes
+  tags:
+    - users
+    - common

@@ -1,6 +1,5 @@
 ---
-- hosts:
-    - zircon
+- hosts: netmaker
   roles:
     - common
     - netmaker
