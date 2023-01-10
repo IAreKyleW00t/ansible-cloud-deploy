@@ -1,0 +1,19 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Pull and start latest 'lscr.io/linuxserver/heimdall:{{ heimdall_container_version }}' docker container
+  community.docker.docker_container:
+    name: heimdall
+    image: "lscr.io/linuxserver/heimdall:{{ heimdall_container_version }}"
+    pull: yes
+    restart_policy: unless-stopped
+    restart: yes
+    volumes:
+      - "{{ heimdall_data_directory }}:/config"
+    ports:
+      - "{{ heimdall_http_port }}:80"
+    comparisons:
+      "*": strict # recreate container on _any_ change
+  become: yes
+  tags:
+    - install
+    - heimdall

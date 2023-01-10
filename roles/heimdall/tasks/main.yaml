@@ -1,0 +1,10 @@
+---
+- import_tasks: files.yaml
+  tags:
+    - heimdall
+    - files
+
+- import_tasks: install.yaml
+  tags:
+    - heimdall
+    - install

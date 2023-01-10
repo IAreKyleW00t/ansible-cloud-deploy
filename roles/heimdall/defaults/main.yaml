@@ -1,0 +1,7 @@
+---
+# Docker container image tag and data directory
+heimdall_container_version: latest
+heimdall_data_directory: /srv/docker/heimdall
+
+# Network settings
+heimdall_http_port: 8080
