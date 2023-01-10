@@ -2,7 +2,7 @@
 ---
 - name: Set system DNS
   block:
-    - name: Remove idempotently flag from /etc/resolv.conf
+    - name: Remove idempotence flag from /etc/resolv.conf
       ansible.builtin.command: chattr -i /etc/resolv.conf
 
     - name: Template out /etc/resolv.conf
@@ -13,7 +13,7 @@
         group: root
         mode: "0644"
 
-    - name: Add idempotently flag from /etc/resolv.conf
+    - name: Add idempotence flag from /etc/resolv.conf
       ansible.builtin.command: chattr +i /etc/resolv.conf
   become: yes
   tags:
