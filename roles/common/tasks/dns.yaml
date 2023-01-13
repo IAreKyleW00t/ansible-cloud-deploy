@@ -2,6 +2,12 @@
 ---
 - name: Set system DNS
   block:
+    - name: Stop and disable systemd-resolved service
+      ansible.builtin.systemd:
+        name: systemd-resolved
+        state: stopped
+        enabled: no
+
     - name: Remove idempotence flag from /etc/resolv.conf
       ansible.builtin.command: chattr -i /etc/resolv.conf
 

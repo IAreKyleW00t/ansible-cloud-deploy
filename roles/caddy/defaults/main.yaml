@@ -1,5 +1,6 @@
 ---
 # Docker container image tag and data directory
+caddy_container_image: caddy
 caddy_container_version: latest
 caddy_data_directory: /srv/docker/caddy
 

@@ -2,6 +2,17 @@
 ---
 - name: Remove legacy docker versions, install dependencies, and add the Apt repo
   block:
+    - name: Correct legacy iptables for Ubuntu
+      community.general.alternatives:
+        name: "{{ item.name }}"
+        path: "{{ item.path }}"
+      when: ansible_distribution == 'Ubuntu'
+      loop:
+        - name: iptables
+          path: /usr/sbin/iptables-legacy
+        - name: ip6tables
+          path: /usr/sbin/ip6tables-legacy
+
     - name: Remove legacy docker engine versions
       ansible.builtin.apt:
         name:

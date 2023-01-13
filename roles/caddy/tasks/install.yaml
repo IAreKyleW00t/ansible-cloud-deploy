@@ -1,16 +1,15 @@
 # Called from mail.yaml, using include_tasks
 ---
-- name: "Pull and start latest 'slothcroissant/caddy-cloudflaredns:{{ caddy_container_version }}' docker container"
+- name: "Pull and start latest '{{ caddy_container_image }}:{{ caddy_container_version }}' docker container"
   community.docker.docker_container:
     name: caddy
-    image: "slothcroissant/caddy-cloudflaredns:{{ caddy_container_version }}"
+    image: "{{ caddy_container_image }}:{{ caddy_container_version }}"
     pull: yes
     restart_policy: unless-stopped
     restart: yes
     network_mode: host # for accessing other Docker services
     env:
-      CLOUDFLARE_EMAIL: "{{ caddy_cloudflare_email }}"
-      CLOUDFLARE_API_TOKEN: "{{ caddy_cloudflare_api_token }}"
+      CF_API_TOKEN: "{{ caddy_cloudflare_api_token }}"
       ACME_AGREE: "true"
     volumes:
       - "{{ caddy_data_directory }}/Caddyfile:/etc/caddy/Caddyfile"

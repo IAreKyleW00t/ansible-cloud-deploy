@@ -1,0 +1,18 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Stop Netmaker server if it is running
+  block:
+    - name: Get Netmaker container info
+      community.docker.docker_container_info:
+        name: netmaker
+      register: container
+
+    - name: Stop Netmaker server
+      command: docker compose down --remove-orphans
+      args:
+        chdir: "{{ netmaker_data_directory }}"
+      when: container.exists
+  become: yes
+  tags:
+    - stop
+    - netmaker

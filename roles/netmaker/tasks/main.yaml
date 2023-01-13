@@ -1,11 +1,8 @@
 ---
-- name: Stop Netmaker server
-  command: docker compose down --remove-orphans
-  args:
-    chdir: "{{ netmaker_data_directory }}"
-  become: yes
+- import_tasks: stop.yaml
   tags:
     - netmaker
+    - stop
 
 - import_tasks: files.yaml
   tags:
