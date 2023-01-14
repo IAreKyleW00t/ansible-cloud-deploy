@@ -17,6 +17,17 @@
         group: root
         mode: "0755"
 
+    - name: Check for ZNC SSL certificate
+      ansible.builtin.stat:
+        path: "{{ znc_caddy_data_directory }}/caddy/certificates/acme-v02.api.letsencrypt.org-directory/{{ znc_domain }}/{{ znc_domain }}.crt"
+      register: znc_cert
+
+    # This may not always work; sometimes cert validation is slow
+    - name: Wait 1 minute for ZNC certificate to generate
+      ansible.builtin.pause:
+        minute: 1
+      when: znc_cert.stat.exists == False
+
     - name: Run ZNC SSL certificate update script
       ansible.builtin.command: "/usr/local/bin/znc-{{ znc_domain }}.sh"
 

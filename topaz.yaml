@@ -3,5 +3,5 @@
     - topaz
   roles:
     - common
-    - unifi
     - caddy
+    - unifi

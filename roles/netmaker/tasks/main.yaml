@@ -1,4 +1,12 @@
 ---
+- name: Include distro-specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution | lower }}.yaml"
+    - default.yaml
+  tags:
+    - netmaker
+
 - import_tasks: stop.yaml
   tags:
     - netmaker

@@ -3,8 +3,8 @@
     - padparadscha
   roles:
     - common
+    - caddy
     - bitwarden
-    - znc
     - kuma
     - heimdall
-    - caddy
+    - znc

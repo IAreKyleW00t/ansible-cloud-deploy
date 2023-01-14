@@ -79,6 +79,7 @@ $RECYCLE.BIN/
 
 # Ansible inventories
 inventory
+*.inventory
 /inventories/
 
 # Ansible host and group vars

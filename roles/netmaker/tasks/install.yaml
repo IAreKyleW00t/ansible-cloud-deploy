@@ -17,12 +17,12 @@
         reload: yes
 
     - name: Pull latest netmaker docker images
-      command: docker compose pull
+      command: "{{ docker_compose_bin }} pull"
       args:
         chdir: "{{ netmaker_data_directory }}"
 
     - name: Start netmaker via docker-compose with new containers
-      command: docker compose up -d --force-recreate
+      command: "{{ docker_compose_bin }} up -d --force-recreate"
       args:
         chdir: "{{ netmaker_data_directory }}"
   become: yes

@@ -7,6 +7,7 @@
         name: systemd-resolved
         state: stopped
         enabled: no
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
     - name: Remove idempotence flag from /etc/resolv.conf
       ansible.builtin.command: chattr -i /etc/resolv.conf

@@ -1,0 +1,25 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Perform full upgrade, reboot system, and cleanup old packages
+  block:
+    - name: Update all packages
+      ansible.builtin.yum:
+        name: "*"
+        state: latest
+      register: yum_update
+
+    - name: Reboot system to apply all updates
+      ansible.builtin.reboot:
+        reboot_timeout: "{{ system_reboot_timeout }}"
+      throttle: 1 # only reboot 1 server at a time
+      become: yes
+      when: yum_update.changed
+
+    - name: Remove obsolete packages that are no longer required
+      ansible.builtin.yum:
+        autoremove: yes
+  become: yes
+  tags:
+    - updates
+    - cleanup
+    - common

@@ -8,7 +8,7 @@
       register: container
 
     - name: Stop Netmaker server
-      command: docker compose down --remove-orphans
+      command: "{{ docker_compose_bin }} down --remove-orphans"
       args:
         chdir: "{{ netmaker_data_directory }}"
       when: container.exists
