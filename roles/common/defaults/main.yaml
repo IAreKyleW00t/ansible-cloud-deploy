@@ -32,6 +32,11 @@ additional_users: []
 ssh_allowed_ips: []
 # - 1.2.3.4
 
+# Swap settings
+swap_file: /var/ansible_swap
+swap_size: 0 # in MB, none by default
+sysctl_swappiness: 10 # default for Ubuntu is 60
+
 # System reboot timeout (in seconds)
 system_reboot_timeout: 3600
 

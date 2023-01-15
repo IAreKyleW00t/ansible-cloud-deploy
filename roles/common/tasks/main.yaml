@@ -27,6 +27,12 @@
     - common
     - ssh
 
+- include_tasks: swap.yaml
+  when: swap_size > 0
+  tags:
+    - common
+    - swap
+
 - include_tasks: "{{ item }}"
   with_first_found:
     - "{{ ansible_distribution | lower }}/updates.yaml"

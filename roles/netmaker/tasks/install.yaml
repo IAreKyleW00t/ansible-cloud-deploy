@@ -1,6 +1,6 @@
 # Called from mail.yaml, using include_tasks
 ---
-# NetMaker uses docker-compose with several containers
+# Netmaker uses docker-compose with several containers
 - name: Update iptables and sysctl, then download and start netmaker
   block:
     - name: Allow FORWARD traffic

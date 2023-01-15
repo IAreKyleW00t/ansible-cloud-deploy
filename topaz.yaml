@@ -1,6 +1,5 @@
 ---
-- hosts:
-    - topaz
+- hosts: topaz
   roles:
     - common
     - caddy

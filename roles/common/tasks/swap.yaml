@@ -1,0 +1,46 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Setup system swap
+  block:
+    - name: Check if swap file exists
+      ansible.builtin.stat:
+        path: "{{ swap_file }}"
+      register: swap
+
+    - name: Create swap file
+      ansible.builtin.command: "fallocate -l {{ swap_size }}M {{ swap_file }}"
+      when: not swap.stat.exists
+
+    - name: Update swap file permissions
+      ansible.builtin.file:
+        path: "{{ swap_file }}"
+        owner: "root"
+        group: "root"
+        mode: "0600"
+
+    - name: Format swap file
+      ansible.builtin.command: "mkswap {{ swap_file }}"
+      when: not swap.stat.exists
+
+    - name: "Mount swap and ensure it persistents across reboots"
+      ansible.posix.mount:
+        src: "{{ swap_file }}"
+        path: swap
+        fstype: swap
+        opts: defaults
+        state: present
+
+    - name: Enable all swap partitions
+      ansible.builtin.command: swapon -a
+
+    - name: Set vm.swappiness to '{{ sysctl_swappiness }}'
+      ansible.posix.sysctl:
+        name: vm.swappiness
+        value: "{{ sysctl_swappiness }}"
+        state: present
+        sysctl_set: yes
+        reload: yes
+  become: yes
+  tags:
+    - swap
+    - common

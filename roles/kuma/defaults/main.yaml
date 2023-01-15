@@ -1,4 +1,4 @@
 ---
 # Docker container image tag and data directory
-uptime_kuma_container_version: latest
-uptime_kuma_data_directory: /srv/docker/uptime-kuma
+kuma_container_version: latest
+kuma_data_directory: /srv/docker/uptime-kuma

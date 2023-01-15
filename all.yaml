@@ -1,5 +1,5 @@
 ---
-# Run NetMaker separately
+# Run Netmaker separately
 # - import_playbook: netmaker.yaml
 
 - import_playbook: raspi.yaml
