@@ -31,12 +31,12 @@
     - name: Run ZNC SSL certificate update script
       ansible.builtin.command: "/usr/local/bin/znc-{{ znc_domain }}.sh"
 
-    - name: Add SSL certificate update cronjob to run on 1st of each month
+    - name: Add SSL certificate update cronjob to run every Sunday morning
       ansible.builtin.cron:
         name: ZNC certificate update for {{ znc_domain }}
-        minute: "0"
-        hour: "0"
-        day: "1"
+        minute: "30"
+        hour: "4"
+        weekday: "0" # Sunday
         job: "/usr/local/bin/znc-{{ znc_domain }}.sh"
   become: yes
   tags:
