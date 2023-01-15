@@ -1,4 +1,7 @@
 ---
+# System hostname
+hostname: "{{ inventory_hostname }}"
+
 # System-wide DNS
 nameserver_timeout: 5
 nameserver_attempts: 2
