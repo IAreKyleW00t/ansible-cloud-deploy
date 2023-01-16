@@ -6,7 +6,6 @@
       ansible.builtin.file:
         path: "{{ item }}"
         state: directory
-        recurse: yes
         owner: root
         group: root
         mode: "0755"
@@ -14,7 +13,14 @@
         - /etc/pihole
         - /etc/unbound/unbound.conf.d
         - /etc/dnsmasq.d/
-        - /var/lib/unbound
+
+    - name: Ensure unbound anchor directories exists
+      ansible.builtin.file:
+        path: /var/lib/unbound
+        state: directory
+        owner: unbound
+        group: unbound
+        mode: "0755"
   become: yes
   tags:
     - files

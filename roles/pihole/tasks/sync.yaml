@@ -6,7 +6,6 @@
       ansible.builtin.file:
         path: "/etc/gravity-sync"
         state: directory
-        recurse: yes
         owner: root
         group: root
         mode: "0755"

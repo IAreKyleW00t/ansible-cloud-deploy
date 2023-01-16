@@ -5,6 +5,7 @@
     - files
 
 - import_tasks: unbound.yaml
+  when: pihole_unbound | bool
   tags:
     - pihole
     - unbound

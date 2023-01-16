@@ -6,7 +6,6 @@
       ansible.builtin.file:
         path: "{{ caddy_data_directory }}/{{ item }}"
         state: directory
-        recurse: yes
         owner: root
         group: root
         mode: "0755"

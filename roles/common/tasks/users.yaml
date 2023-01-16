@@ -20,7 +20,6 @@
       ansible.builtin.file:
         path: "/home/{{ user.name }}/.ssh"
         state: directory
-        recurse: yes
         owner: "{{ user.name }}"
         group: "{{ user.name }}"
         mode: "0700"

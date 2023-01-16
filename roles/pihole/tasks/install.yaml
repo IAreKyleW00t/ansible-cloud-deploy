@@ -10,14 +10,6 @@
         group: root
         mode: "0644"
 
-    - name: Check if pihole command is already installed
-      ansible.builtin.get_url:
-        url: https://install.pi-hole.net
-        dest: /tmp/pihole-install.sh
-        owner: root
-        group: root
-        mode: "0755"
-
     - name: Download latest Pi-Hole install script
       ansible.builtin.get_url:
         url: https://install.pi-hole.net
