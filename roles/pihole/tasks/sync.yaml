@@ -1,0 +1,93 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Setup Gravity Sync
+  block:
+    - name: Ensure Gravity Sync directory exists
+      ansible.builtin.file:
+        path: "/etc/gravity-sync"
+        state: directory
+        recurse: yes
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Template out Gravity Sync configuration
+      ansible.builtin.template:
+        src: gravity-sync.conf.j2
+        dest: "/etc/gravity-sync/gravity-sync.conf"
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Add Gravity Sync SSH private key
+      ansible.builtin.copy:
+        dest: /etc/gravity-sync/gravity-sync.rsa
+        src: "ssh/{{ pihole_sync_user }}_rsa" # need to include locally
+        owner: "{{ pihole_sync_user }}"
+        group: "{{ pihole_sync_user }}"
+        mode: "0600"
+
+    - name: Add Gravity Sync SSH public key
+      ansible.builtin.copy:
+        dest: /etc/gravity-sync/gravity-sync.rsa.pub
+        src: "ssh/{{ pihole_sync_user }}_rsa.pub" # need to include locally
+        owner: "{{ pihole_sync_user }}"
+        group: "{{ pihole_sync_user }}"
+        mode: "0644"
+
+    - name: Add SSH key to authorized_key
+      ansible.posix.authorized_key:
+        user: "{{ pihole_sync_user }}"
+        key: "{{ item }}"
+        state: present
+      with_file:
+        - "ssh/{{ pihole_sync_user }}_rsa.pub"
+
+    - name: Grab SSH identities from remote host
+      ansible.builtin.command: "ssh-keyscan -H {{ pihole_sync_host }}"
+      register: remote_host_rsa
+
+    - name: Add SSH identities to known_hosts for 'root'
+      ansible.builtin.known_hosts:
+        name: "{{ pihole_sync_host }}"
+        path: /root/.ssh/known_hosts
+        key: "{{ item }}"
+      loop: "{{ remote_host_rsa.stdout_lines }}"
+
+    - name: Add SSH identities to known_hosts for '{{ pihole_sync_user }}'
+      ansible.builtin.known_hosts:
+        name: "{{ pihole_sync_host }}"
+        path: "/home/{{ pihole_sync_user }}/.ssh/known_hosts"
+        key: "{{ item }}"
+      loop: "{{ remote_host_rsa.stdout_lines }}"
+
+    - name: Download latest Gravity Sync install script
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/vmstan/gs-install/main/gs-install.sh
+        dest: /tmp/gs-install.sh
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Run Gravity Sync install script
+      ansible.builtin.command: /tmp/gs-install.sh
+
+    - name: Delete old Gravity Sync intsall script
+      ansible.builtin.file:
+        path: /tmp/pihole-install.sh
+        state: absent
+
+    - name: Perform gravity-sync PUSH if leader
+      ansible.builtin.command: gravity-sync push
+      when: pihole_sync_leader
+
+    - name: Perform gravity-sync PULL on non-leaders
+      ansible.builtin.command: gravity-sync pull
+      when: not pihole_sync_leader
+
+    - name: Perform gravity-sync AUTO to setup automation
+      ansible.builtin.command: gravity-sync auto
+  become: yes
+  tags:
+    - sync
+    - pihole

@@ -1,0 +1,55 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Install and setup unbound
+  block:
+    - name: Download latest root hints
+      ansible.builtin.get_url:
+        url: https://www.internic.net/domain/named.root
+        dest: /var/lib/unbound/root.hints
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Template out Pi-Hole configuration for unbound
+      ansible.builtin.template:
+        src: unbound.conf.j2
+        dest: /etc/unbound/unbound.conf.d/pi-hole.conf
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Template out edns unbound config for dnsmasq
+      ansible.builtin.template:
+        src: edns.conf.j2
+        dest: /etc/dnsmasq.d/99-edns.conf
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Install/Update unbound
+      ansible.builtin.apt:
+        name: unbound
+        state: latest
+
+    - name: Enable and start the unbound service
+      ansible.builtin.systemd:
+        name: unbound
+        enabled: yes
+        state: started
+  become: yes
+  tags:
+    - unbound
+    - pihole
+
+- name: Remove resolvconf for unbound
+  block:
+    - name: Disable and stop the unbound-resolvconf service
+      ansible.builtin.systemd:
+        name: unbound-resolvconf
+        enabled: yes
+        state: started
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  become: yes
+  tags:
+    - resolvconf
+    - pihole

@@ -1,0 +1,56 @@
+---
+# Docker container image tag and data directory
+pihole_container_version: latest
+pihole_data_directory: /srv/docker/pihole
+
+# Pi-Hole settings
+pihole_web_password: 998ed4d621742d0c2d85ed84173db569afa194d4597686cae947324aa58ab4bb # admin
+pihole_web_theme: default-dark
+pihole_timezone: America/New_York
+
+# Network settings
+idempotence: "{{ ansible_default_ipv4.address }}"
+pihole_http_port: 80
+pihole_dns_port: 53
+
+# Pi-Hole settings
+pihole_interface: eth0
+pihole_query_logging: true
+pihole_install_web_server: true
+pihole_install_web_interface: true
+pihole_lighttpd_enabled: true
+pihole_cache_size: 10000
+pihole_dns_fqdn_required: true
+pihole_dns_bogus_priv: true
+pihole_dnsmasq_listening: eth0
+pihole_webpassword: 998ed4d621742d0c2d85ed84173db569afa194d4597686cae947324aa58ab4bb # admin
+pihole_blocking_enabled: true
+pihole_dnssec: true
+pihole_rev_server: false
+pihole_rev_server_cidr: 192.168.0.0/16
+pihole_rev_server_target: 192.168.1.1
+pihole_rev_server_domain: ""
+pihole_webuiboxedlayout: boxed
+pihole_webtheme: default-dark
+pihole_api_exclude_domains: []
+pihole_api_exclude_clients: []
+pihole_api_query_log_show: all
+pihole_dns:
+  - 127.0.0.1#5353 # unbound
+
+# Unbound settings
+pihole_unbound: true
+pihole_unbound_port: 5353
+pihole_unbound_do_ip4: true
+pihole_unbound_do_ip6: false
+pihole_unbound_prefer_ip6: false
+pihole_unbound_do_udp: true
+pihole_unbound_do_tcp: true
+pihole_unbound_dnssec: true
+pihole_unbound_edns_buffer_size: 1232
+
+# Gravity sync settings
+pihole_sync: false
+pihole_sync_leader: false
+pihole_sync_user: gravitysync
+pihole_sync_host: ""

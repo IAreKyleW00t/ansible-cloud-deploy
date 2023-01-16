@@ -1,0 +1,21 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Ensure Pi-Hole and other data directories exists
+  block:
+    - name: Ensure pihole, unbound, and dnsmasq config directories exists
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        recurse: yes
+        owner: root
+        group: root
+        mode: "0755"
+      loop:
+        - /etc/pihole
+        - /etc/unbound/unbound.conf.d
+        - /etc/dnsmasq.d/
+        - /var/lib/unbound
+  become: yes
+  tags:
+    - files
+    - pihole

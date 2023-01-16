@@ -1,0 +1,39 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Install and setup Pi-Hole
+  block:
+    - name: Template out Pi-Hole configuration
+      ansible.builtin.template:
+        src: pihole.conf.j2
+        dest: /etc/pihole/setupVars.conf
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Check if pihole command is already installed
+      ansible.builtin.get_url:
+        url: https://install.pi-hole.net
+        dest: /tmp/pihole-install.sh
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Download latest Pi-Hole install script
+      ansible.builtin.get_url:
+        url: https://install.pi-hole.net
+        dest: /tmp/pihole-install.sh
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Run Pi-Hole install script
+      ansible.builtin.command: /tmp/pihole-install.sh --unattended
+
+    - name: Delete old Pi-Hole intsall script
+      ansible.builtin.file:
+        path: /tmp/pihole-install.sh
+        state: absent
+  become: yes
+  tags:
+    - install
+    - pihole
