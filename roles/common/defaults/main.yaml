@@ -39,23 +39,3 @@ sysctl_swappiness: 10 # default for Ubuntu is 60
 
 # System reboot timeout (in seconds)
 system_reboot_timeout: 3600
-
-# Linode dyndns container image tag
-linode_dyndns_container_version: latest
-
-# Linode API token
-linode_api_token: ""
-
-# Linode domain
-linode_dyndns_domain: example.com
-
-# Hosts to update
-linode_dyndns_hosts: []
-# - server1
-# - build
-
-# DNS update interval (in minutes)
-linode_dyndns_interval: 15
-
-# Update AAAA (IPv6) record
-linode_dyndns_ipv6: False

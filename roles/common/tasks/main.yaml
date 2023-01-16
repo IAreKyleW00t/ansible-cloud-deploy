@@ -47,12 +47,6 @@
     - common
     - docker
 
-- import_tasks: dyndns.yaml
-  when: linode_api_token | length > 0
-  tags:
-    - common
-    - dyndns
-
 - include_tasks: users.yaml
   loop: "{{ additional_users }}"
   loop_control:
