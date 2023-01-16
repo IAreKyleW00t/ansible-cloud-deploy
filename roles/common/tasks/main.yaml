@@ -6,7 +6,7 @@
 
 # Pi-Hole controls it's own DNS, so always skip it
 - include_tasks: dns.yaml
-  when: nameservers | length > 0 and 'pihole' not in role_names
+  when: nameservers | length > 0 and 'pihole' not in group_names
   tags:
     - common
     - dns

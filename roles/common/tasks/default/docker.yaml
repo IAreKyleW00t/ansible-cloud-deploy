@@ -4,7 +4,7 @@
     - name: Check if netclient is running on remote host
       ansible.builtin.systemd:
         name: netclient
-      when: ansible_distribution == 'Ubuntu' and 'netmaker' not in role_names
+      when: ansible_distribution == 'Ubuntu' and 'netmaker' not in group_names
       register: netclient_service
 
     - name: Correct legacy iptables for Ubuntu when running netclient
@@ -13,7 +13,7 @@
         path: "{{ app.path }}"
       when: |
         ansible_distribution == 'Ubuntu' and
-        'netmaker' not in role_names and
+        'netmaker' not in group_names and
         netclient_service.status.ActiveState == 'active'
       loop_control:
         loop_var: app
