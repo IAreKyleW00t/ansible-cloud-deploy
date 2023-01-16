@@ -2,7 +2,7 @@
 # Run Netmaker separately
 # - import_playbook: netmaker.yaml
 
-- import_playbook: raspi.yaml
 - import_playbook: pihole.yaml
+- import_playbook: raspi.yaml
 - import_playbook: padparadscha.yaml
 - import_playbook: topaz.yaml

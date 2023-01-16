@@ -1,18 +1,4 @@
 ---
-# Docker container image tag and data directory
-pihole_container_version: latest
-pihole_data_directory: /srv/docker/pihole
-
-# Pi-Hole settings
-pihole_web_password: 998ed4d621742d0c2d85ed84173db569afa194d4597686cae947324aa58ab4bb # admin
-pihole_web_theme: default-dark
-pihole_timezone: America/New_York
-
-# Network settings
-idempotence: "{{ ansible_default_ipv4.address }}"
-pihole_http_port: 80
-pihole_dns_port: 53
-
 # Pi-Hole settings
 pihole_interface: eth0
 pihole_query_logging: true
@@ -41,12 +27,12 @@ pihole_dns:
 # Unbound settings
 pihole_unbound: true
 pihole_unbound_port: 5353
-pihole_unbound_do_ip4: true
-pihole_unbound_do_ip6: false
-pihole_unbound_prefer_ip6: false
-pihole_unbound_do_udp: true
-pihole_unbound_do_tcp: true
-pihole_unbound_dnssec: true
+pihole_unbound_do_ip4: "yes"
+pihole_unbound_do_ip6: "no"
+pihole_unbound_prefer_ip6: "no"
+pihole_unbound_do_udp: "yes"
+pihole_unbound_do_tcp: "yes"
+pihole_unbound_dnssec: "yes"
 pihole_unbound_edns_buffer_size: 1232
 
 # Gravity sync settings
