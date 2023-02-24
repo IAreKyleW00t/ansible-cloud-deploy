@@ -2,6 +2,22 @@
 ---
 - name: Install and setup unbound
   block:
+    - name: Ensure unbound config directory exists
+      ansible.builtin.file:
+        path: /etc/unbound/unbound.conf.d
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Ensure unbound anchor directories exists
+      ansible.builtin.file:
+        path: /var/lib/unbound
+        state: directory
+        owner: unbound
+        group: unbound
+        mode: "0755"
+
     - name: Download latest root hints
       ansible.builtin.get_url:
         url: https://www.internic.net/domain/named.root
@@ -14,14 +30,6 @@
       ansible.builtin.template:
         src: unbound.conf.j2
         dest: /etc/unbound/unbound.conf.d/pi-hole.conf
-        owner: root
-        group: root
-        mode: "0644"
-
-    - name: Template out edns unbound config for dnsmasq
-      ansible.builtin.template:
-        src: edns.conf.j2
-        dest: /etc/dnsmasq.d/99-edns.conf
         owner: root
         group: root
         mode: "0644"

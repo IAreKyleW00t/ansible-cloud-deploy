@@ -22,10 +22,11 @@ pihole_api_exclude_domains: []
 pihole_api_exclude_clients: []
 pihole_api_query_log_show: all
 pihole_dns:
-  - 127.0.0.1#5353 # unbound
+  - "9.9.9.9" # Quad9, filtered, DNSSEC
+  - "149.112.112.112" # Quad9, filtered, DNSSEC
 
 # Unbound settings
-pihole_unbound: true
+pihole_unbound: false
 pihole_unbound_port: 5353
 pihole_unbound_do_ip4: "yes"
 pihole_unbound_do_ip6: "no"
