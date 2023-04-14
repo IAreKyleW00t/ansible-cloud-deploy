@@ -1,5 +1,8 @@
 ---
-- import_tasks: hostname.yaml
+- include_tasks: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution | lower }}/hostname.yaml"
+    - default/hostname.yaml
   tags:
     - common
     - hostname
@@ -47,6 +50,7 @@
     - common
     - docker
 
+# TODO: Account for groups that may not exist yet
 - include_tasks: users.yaml
   loop: "{{ additional_users }}"
   loop_control:

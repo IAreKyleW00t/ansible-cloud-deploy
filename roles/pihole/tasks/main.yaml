@@ -10,15 +10,15 @@
     - pihole
     - unbound
 
-- import_tasks: dns.yaml
-  tags:
-    - pihole
-    - dns
-
 - import_tasks: install.yaml
   tags:
     - pihole
     - install
+
+- import_tasks: dns.yaml
+  tags:
+    - pihole
+    - dns
 
 - import_tasks: sync.yaml
   when: pihole_sync | bool

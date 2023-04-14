@@ -1,0 +1,24 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Set system hostname
+  block:
+    - name: Set system hostname
+      ansible.builtin.hostname:
+        name: "{{ hostname }}"
+      register: hostname_update
+
+    - name: Set local hostname in /etc/hosts
+      ansible.builtin.lineinfile:
+        dest: /etc/hosts
+        line: "127.0.1.1 {{ hostname }}"
+      register: hosts_update
+
+    - name: Reboot system to apply hostname
+      ansible.builtin.reboot:
+        reboot_timeout: "{{ system_reboot_timeout }}"
+      throttle: 1 # only reboot 1 server at a time
+      when: hostname_update.changed or hosts_update.changed
+  become: yes
+  tags:
+    - hostname
+    - common
