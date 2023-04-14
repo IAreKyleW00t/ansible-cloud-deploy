@@ -14,7 +14,8 @@ netmaker_letsencrypt_email: admin@example.com
 # Netmaker master key
 netmaker_master_key: BkFGRQ......c9MclD
 
-# Mosquitto admin password
+# Mosquitto credentials
+netmaker_mq_username: netmaker
 netmaker_mq_password: Passw0rd!
 
 # Netmaker node ID (name)

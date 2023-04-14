@@ -44,14 +44,20 @@
       loop:
         - regexp: 'PORT_FORWARD_SERVICES: ".+"'
           value: 'PORT_FORWARD_SERVICES: ""'
+        - regexp: REPLACE_SERVER_IMAGE_TAG
+          value: "{{ netmaker_branch }}"
+        - regexp: REPLACE_UI_IMAGE_TAG
+          value: "{{ netmaker_branch }}"
         - regexp: SERVER_PUBLIC_IP
           value: "{{ ansible_default_ipv4.address }}"
         - regexp: NETMAKER_BASE_DOMAIN
           value: "{{ netmaker_base_domain }}"
         - regexp: REPLACE_MASTER_KEY
           value: "{{ netmaker_master_key }}"
-        - regexp: REPLACE_MQ_ADMIN_PASSWORD
+        - regexp: REPLACE_MQ_PASSWORD
           value: "{{ netmaker_mq_password }}"
+        - regexp: REPLACE_MQ_USERNAME
+          value: "{{ netmaker_mq_username }}"
         - regexp: "NODE_ID:.+"
           value: "NODE_ID: {{ netmaker_node_id | quote }}"
         - regexp: '^volumes:\n(\s+\w+: {}(\n|$))+'
