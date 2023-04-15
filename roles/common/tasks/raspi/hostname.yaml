@@ -10,6 +10,7 @@
     - name: Set local hostname in /etc/hosts
       ansible.builtin.lineinfile:
         dest: /etc/hosts
+        regexp: "127.0.1.1\s+{{ hostname }}"
         line: "127.0.1.1 {{ hostname }}"
         insertbefore: "^#+#$"
         firstmatch: yes
