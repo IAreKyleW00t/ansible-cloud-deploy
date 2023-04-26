@@ -1,0 +1,11 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Create additional groups
+  block:
+    - name: Ensure group '{{ item }}' exists
+      ansible.builtin.group:
+        name: "{{ item }}"
+  become: yes
+  tags:
+    - groups
+    - common

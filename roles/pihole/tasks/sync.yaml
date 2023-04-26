@@ -78,14 +78,18 @@
 
     - name: Perform gravity-sync PUSH if leader
       ansible.builtin.command: gravity-sync push
+      throttle: 1 # only sync 1 server at a time
       when: pihole_sync_leader
 
     - name: Perform gravity-sync PULL on non-leaders
       ansible.builtin.command: gravity-sync pull
+      throttle: 1 # only sync 1 server at a time
       when: not pihole_sync_leader
 
     - name: Perform gravity-sync AUTO to setup automation
+      throttle: 1 # only setup 1 server at a time
       ansible.builtin.command: gravity-sync auto
+      when: pihole_sync_auto
   become: yes
   tags:
     - sync

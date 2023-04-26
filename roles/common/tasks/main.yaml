@@ -50,7 +50,12 @@
     - common
     - docker
 
-# TODO: Account for groups that may not exist yet
+- include_tasks: groups.yaml
+  loop: "{{ additional_groups }}"
+  tags:
+    - common
+    - groups
+
 - include_tasks: users.yaml
   loop: "{{ additional_users }}"
   loop_control:

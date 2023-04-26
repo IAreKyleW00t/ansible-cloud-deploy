@@ -41,3 +41,4 @@ pihole_sync: false
 pihole_sync_leader: false
 pihole_sync_user: gravitysync
 pihole_sync_host: ""
+pihole_sync_auto: true

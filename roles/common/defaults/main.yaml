@@ -18,6 +18,9 @@ additional_mounts: []
 #    fstype: xfs
 #    opts: defaults,nofail
 
+# Additional groups
+additional_groups: []
+
 # Additional users
 additional_users: []
 # - name: test
