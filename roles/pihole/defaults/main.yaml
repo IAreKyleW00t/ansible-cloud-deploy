@@ -24,6 +24,7 @@ pihole_api_query_log_show: all
 pihole_dns:
   - "9.9.9.9" # Quad9, filtered, DNSSEC
   - "149.112.112.112" # Quad9, filtered, DNSSEC
+pihole_static_records: {}
 
 # Unbound settings
 pihole_unbound: false

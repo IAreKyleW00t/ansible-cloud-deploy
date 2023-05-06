@@ -1,4 +1,4 @@
 ---
-- hosts: vm
+- hosts: k3s
   roles:
     - common

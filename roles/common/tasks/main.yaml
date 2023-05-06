@@ -1,8 +1,5 @@
 ---
-- include_tasks: "{{ item }}"
-  with_first_found:
-    - "{{ ansible_distribution | lower }}/hostname.yaml"
-    - default/hostname.yaml
+- import_tasks: hostname.yaml
   tags:
     - common
     - hostname

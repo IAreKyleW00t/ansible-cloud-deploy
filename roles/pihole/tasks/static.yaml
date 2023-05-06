@@ -1,0 +1,20 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Write static records into DNSMasq.d
+  block:
+    - name: Write static records into DNSMasq.d
+      ansible.builtin.template:
+        src: dnsmasq.conf.j2
+        dest: /etc/dnsmasq.d/10-ansible.conf
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Reload Pi-Hole FTL
+      ansible.builtin.systemd:
+        name: pihole-FTL
+        state: reloaded
+  become: yes
+  tags:
+    - static
+    - pihole

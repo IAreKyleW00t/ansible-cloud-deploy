@@ -10,16 +10,15 @@
     - name: Set local hostname in /etc/hosts
       ansible.builtin.lineinfile:
         dest: /etc/hosts
-        regexp: "^127.0.1.1( +){{ hostname }}"
+        regexp: "127.0.1.1(\\s+).+"
         line: "127.0.1.1\\1{{ hostname }}"
         backrefs: yes
-      register: hosts_update
 
     - name: Reboot system to apply hostname
       ansible.builtin.reboot:
         reboot_timeout: "{{ system_reboot_timeout }}"
       throttle: 1 # only reboot 1 server at a time
-      when: hostname_update.changed or hosts_update.changed
+      when: hostname_update.changed
   become: yes
   tags:
     - hostname
