@@ -13,7 +13,7 @@
         reboot_timeout: "{{ system_reboot_timeout }}"
       throttle: 1 # only reboot 1 server at a time
       become: yes
-      when: yum_update.changed
+      when: yum_update.changed and 'k3s' not in group_names
 
     - name: Remove obsolete packages that are no longer required
       ansible.builtin.yum:
