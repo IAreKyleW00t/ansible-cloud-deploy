@@ -18,5 +18,9 @@ netmaker_master_key: BkFGRQ......c9MclD
 netmaker_mq_username: netmaker
 netmaker_mq_password: Passw0rd!
 
+# TURN credentials
+netmaker_turn_username: netmaker
+netmaker_turn_password: Passw0rd!
+
 # Netmaker node ID (name)
 netmaker_node_id: netmaker-1

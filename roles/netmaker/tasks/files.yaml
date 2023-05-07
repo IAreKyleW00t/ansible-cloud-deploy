@@ -15,6 +15,7 @@
         - caddy/conf
         - mosquitto/data
         - mosquitto/logs
+        - turndata
         - sqldata
 
     - name: Download latest netmaker docker files
@@ -58,6 +59,14 @@
           value: "{{ netmaker_mq_password }}"
         - regexp: REPLACE_MQ_USERNAME
           value: "{{ netmaker_mq_username }}"
+        - regexp: REPLACE_TURN_PASSWORD
+          value: "{{ netmaker_turn_password }}"
+        - regexp: REPLACE_TURN_USERNAME
+          value: "{{ netmaker_turn_username }}"
+        - regexp: REPLACE_PASSWORD
+          value: "{{ netmaker_turn_password }}"
+        - regexp: REPLACE_USERNAME
+          value: "{{ netmaker_turn_username }}"
         - regexp: "NODE_ID:.+"
           value: "NODE_ID: {{ netmaker_node_id | quote }}"
         - regexp: '^volumes:\n(\s+\w+: {}(\n|$))+'
@@ -72,6 +81,8 @@
           value: "{{ netmaker_data_directory }}/mosquitto/data:"
         - regexp: "mosquitto_logs:"
           value: "{{ netmaker_data_directory }}/mosquitto/logs:"
+        - regexp: "turn_server:"
+          value: "{{ netmaker_data_directory }}/turndata:"
         - regexp: "sqldata:"
           value: "{{ netmaker_data_directory }}/sqldata:"
         - regexp: '\/root\/(.+):'
