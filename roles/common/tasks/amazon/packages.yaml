@@ -1,0 +1,13 @@
+# Called from mail.yaml, using include_tasks
+---
+- name: Install additional system packages
+  block:
+    - name: Install additional packages
+      ansible.builtin.yum:
+        name: "{{ additional_packages }}"
+        state: latest
+  become: yes
+  tags:
+    - updates
+    - cleanup
+    - common

@@ -42,3 +42,6 @@ sysctl_swappiness: 10 # default for Ubuntu is 60
 
 # System reboot timeout (in seconds)
 system_reboot_timeout: 3600
+
+# System packages to install
+additional_packages: []

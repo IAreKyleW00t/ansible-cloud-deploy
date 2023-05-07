@@ -42,6 +42,14 @@
     - common
     - updates
 
+- include_tasks: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution | lower }}/packages.yaml"
+    - default/packages.yaml
+  tags:
+    - common
+    - packages
+
 - import_tasks: docker.yaml
   tags:
     - common
