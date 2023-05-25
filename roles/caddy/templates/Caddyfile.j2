@@ -1,13 +1,11 @@
 # {{ ansible_managed }} - {{ ansible_date_time.date }} {{ ansible_date_time.time }}
 {
     email {{ caddy_letsencrypt_email }}
+    acme_dns cloudflare {env.CF_API_TOKEN}
 }
 
 {% for key, val in caddy_hosts.items() %}
 {{ key }} {
     {{ val | indent(4) }}
-    tls {
-        dns cloudflare {env.CF_API_TOKEN}
-    }
 }
 {% endfor %}
