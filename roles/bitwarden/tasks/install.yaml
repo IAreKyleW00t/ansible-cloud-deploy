@@ -11,6 +11,8 @@
       WEBSOCKET_ENABLED: "true"
       WEBSOCKET_PORT: "{{ bitwarden_websocket_port | string }}"
       ADMIN_TOKEN: "{{ bitwarden_admin_token }}"
+      YUBICO_CLIENT_ID: "{{ bitwarden_yubico_client_id }}"
+      YUBICO_SECRET_KEY: "{{ bitwarden_yubico_secret_key }}"
     volumes:
       - "{{ bitwarden_data_directory }}:/data"
     ports:
